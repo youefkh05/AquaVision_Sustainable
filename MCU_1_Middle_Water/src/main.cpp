@@ -2,7 +2,8 @@
 #include "Water_Level/Water_Level.h"
 
 
-void setup() {
+void setup()
+{
 
   /*ESP NOW Init Start*/
 
@@ -13,9 +14,10 @@ void setup() {
   Serial.begin(9600);
 }
 
-void loop() {
-  Serial.println(getDepth_cm(HCSR04));
-  delay(500);
+void loop()
+{
+  Serial.println(getDepth_Average_cm(HCSR04));
+  delay(50);
 
   // ESP NOW Send Data
 }

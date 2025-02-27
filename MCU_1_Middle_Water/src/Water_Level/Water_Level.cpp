@@ -29,9 +29,12 @@ void Sensor_init(Sensor_Type sensor)
     }
 }
 
+/***************************************************************************************/
+
 float32 getDepth_cm(Sensor_Type sensor)
 {
-    uint32 distance = 0;
+    //todo: 5od el average bta3 5amas 2erayat
+    float32 distance = 0;
 
     switch(sensor)
     {
@@ -48,5 +51,18 @@ float32 getDepth_cm(Sensor_Type sensor)
             break;
     }
 
-    return CONTAINER_DEPTH_CM - distance;
+    return (CONTAINER_DEPTH_CM - distance);
+}
+
+/****************************************************************************************/
+
+float32 getDepth_Average_cm(Sensor_Type sensor)
+{
+    float32 sum = 0;
+    for(uint8 i = 0; i < AVERAGE_NUM; i++)
+    {
+        sum += getDepth_cm(sensor);
+    }
+
+    return (sum / AVERAGE_NUM);
 }

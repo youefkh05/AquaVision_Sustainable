@@ -29,7 +29,7 @@ float32 getDistanceinCM_HCSR04(void)
     sendTrig();
     uint32 duration = pulseIn(ECHO_PIN, HIGH);
 
-    uint32 distance = 0.0343 * duration / 2;
+    float32 distance = (0.0343 * duration) / 2.0;
 
     return distance;
 }

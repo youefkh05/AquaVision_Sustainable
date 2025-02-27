@@ -9,11 +9,10 @@
 #ifndef HCSR04_H
 #define HCSR04_H
 
-#include "../std_types.h"
-#include <Arduino.h>
+#include "../common_includes.h"
 
-#define TRIG_PIN 9
-#define ECHO_PIN 10
+#define TRIG_PIN 2
+#define ECHO_PIN 4
 
 void HCSR04_init(void);
 // Intializes the Sensors
