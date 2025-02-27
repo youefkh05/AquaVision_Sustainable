@@ -33,7 +33,6 @@ void Sensor_init(Sensor_Type sensor)
 
 float32 getDepth_cm(Sensor_Type sensor)
 {
-    //todo: 5od el average bta3 5amas 2erayat
     float32 distance = 0;
 
     switch(sensor)
