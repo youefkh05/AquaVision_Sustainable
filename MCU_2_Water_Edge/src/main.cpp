@@ -15,6 +15,13 @@ void setup() {
 }
 
 void loop() {
+  // Get Sensor Data
+
+  // Recieve ESPNOW Data
+
+  // Display Data on OLED
+
+  // Send Data to web server
   Serial.println(getDepth_cm(HCSR04));
   delay(500);
 
