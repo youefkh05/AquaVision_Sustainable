@@ -11,7 +11,7 @@
 #include "../common_includes.h"
 
 #define CONTAINER_DEPTH_CM      15
-#define AVERAGE_NUM             3
+#define AVERAGE_NUM             5
 
 typedef enum
 {

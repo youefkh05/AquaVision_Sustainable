@@ -17,7 +17,7 @@ void setup()
 void loop()
 {
   Serial.println(getDepth_Average_cm(HCSR04));
-  delay(50);
+  delay(500);
 
   // ESP NOW Send Data
 }
