@@ -10,7 +10,8 @@
 #include "Sender.h"
 
 /* MAC address of the receiver ESP32*/
-uint8_t receiverMAC[] = {0xCC, 0xDB, 0xA7, 0x9C, 0xED, 0x0C};
+uint8_t receiverMAC[] = {0xF0, 0x24, 0xF9, 0x5A, 0x76, 0xCC};
+static uint8 indicator_flag = false;
 
 /*
  * Callback function triggered after data is sent.
@@ -19,11 +20,6 @@ uint8_t receiverMAC[] = {0xCC, 0xDB, 0xA7, 0x9C, 0xED, 0x0C};
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
     Serial.print("Send Status: ");
     Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
-
-    // Debug LED Segnifying data sent
-    digitalWrite(ESPNOW_DEBUG_LED, HIGH);
-    delay(50);
-    digitalWrite(ESPNOW_DEBUG_LED, LOW);
 }
 
 /*
@@ -42,7 +38,7 @@ void ESPNOW_Sender_Init()
     }
 
     esp_now_register_send_cb(OnDataSent); // Register send status callback
-
+    pinMode(ESPNOW_DEBUG_LED, OUTPUT);
 
     //todo: work on getting mac address (Awaiting Second ESP) 
     //todo: Work on finding a way to not make the MAC Address hard coded
@@ -51,9 +47,13 @@ void ESPNOW_Sender_Init()
     peerInfo.channel = 0;
     peerInfo.encrypt = false;
 
-    esp_now_add_peer(&peerInfo); // Add receiver as a peer
-
-    pinMode(ESPNOW_DEBUG_LED, OUTPUT);
+    while(esp_now_add_peer(&peerInfo) != ESP_OK)
+    {
+        digitalWrite(ESPNOW_DEBUG_LED, HIGH);
+        Serial.println("Add Peer failed");
+    }
+    digitalWrite(ESPNOW_DEBUG_LED, LOW);
+    // Add receiver as a peer
 }
 
 /*

@@ -7,12 +7,6 @@ SensorData data;
 
 void setup()
 {
-
-  /*ESP NOW Init Start*/
-
-
-  /*ESP NOW Init End*/
-
   Sensor_init(HCSR04);
   ESPNOW_Sender_Init();
   Serial.begin(9600);
@@ -31,5 +25,4 @@ void loop()
   // ESP NOW Send Data
 }
 
-//todo: Create ESP Now Send Data Call Back Function
 
