@@ -2,15 +2,15 @@
 #include "Water_Level/Water_Level.h"
 #include "ESPNOW_Reciever/Reciever.h"
 
-struct AllData : public SensorData
+struct Data : public SensorData
 {
-  float32 water_level2
-};
+  float32 water_level2;
+} AllData;
 // Struct to store all data
 
 //todo: Create Global Struct Variable for data storing
 extern SensorData receivedData;
-extern isRecieved;
+extern bool isRecieved;
 
 void setup() {
 

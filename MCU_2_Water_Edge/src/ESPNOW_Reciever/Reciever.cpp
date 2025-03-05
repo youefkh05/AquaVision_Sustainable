@@ -21,7 +21,7 @@ bool isRecieved = false;
  */
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
-    Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level, receivedData.temperature);
+    Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
 }
 
 /*
