@@ -31,14 +31,16 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 void ESPNOW_Sender_Init()
 {
     WiFi.mode(WIFI_STA); // Set ESP32 to station mode for ESP-NOW
+    pinMode(ESPNOW_DEBUG_LED, OUTPUT);
 
     while (esp_now_init() != ESP_OK) {
         Serial.println("ESP-NOW Init Failed");
-        return;
+        digitalWrite(ESPNOW_DEBUG_LED, HIGH);
+        delay(10);
     }
 
     esp_now_register_send_cb(OnDataSent); // Register send status callback
-    pinMode(ESPNOW_DEBUG_LED, OUTPUT);
+    
 
     //todo: work on getting mac address (Awaiting Second ESP) 
     //todo: Work on finding a way to not make the MAC Address hard coded
@@ -51,6 +53,7 @@ void ESPNOW_Sender_Init()
     {
         digitalWrite(ESPNOW_DEBUG_LED, HIGH);
         Serial.println("Add Peer failed");
+        delay(100);
     }
     digitalWrite(ESPNOW_DEBUG_LED, LOW);
     // Add receiver as a peer

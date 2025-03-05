@@ -1,14 +1,20 @@
 #include <Arduino.h>
 #include "Water_Level/Water_Level.h"
+#include "ESPNOW_Reciever/Reciever.h"
+
+struct AllData : public SensorData
+{
+  float32 water_level2
+};
+// Struct to store all data
 
 //todo: Create Global Struct Variable for data storing
+extern SensorData receivedData;
+extern isRecieved;
 
 void setup() {
 
-  /*ESP NOW Init Start*/
-
-  
-  /*ESP NOW Init End*/
+  void ESPNOW_Receiver_Init();
 
   Sensor_init(HCSR04);
   Serial.begin(9600);
@@ -16,14 +22,21 @@ void setup() {
 
 void loop() {
   // Get Sensor Data
+  AllData.water_level_1 = getDepth_Average_cm(HCSR04);
 
-  // Recieve ESPNOW Data
+  Serial.println("Recieveing Data...");
+  while(isRecieved == false) {}
+  isRecieved = true;
+
+  AllData.water_level_1 = receivedData.water_level_1;
+  AllData.temp = receivedData.temp;
+  // Recieve ESPNOW Data: Interrupt
+
+  Serial.printf("Water Level 1: %.2f", AllData.water_level_1);
 
   // Display Data on OLED
 
   // Send Data to web server
-  Serial.println(getDepth_cm(HCSR04));
-  delay(500);
 
 }
 
