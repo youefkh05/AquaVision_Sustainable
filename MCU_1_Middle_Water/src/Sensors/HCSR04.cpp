@@ -26,8 +26,9 @@ void sendTrig(void)
 
 float32 getDistanceinCM_HCSR04(void)
 {
+    uint32 duration;
     sendTrig();
-    uint32 duration = pulseIn(ECHO_PIN, HIGH);
+    duration = pulseIn(ECHO_PIN, HIGH);
 
     float32 distance = (0.0343 * duration) / 2.0;
 

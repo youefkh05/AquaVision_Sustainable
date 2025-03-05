@@ -10,5 +10,6 @@
 #define COMMON_INCLUDES_H
 
 #include <Arduino.h>
+#include "std_types.h"
 
 #endif

@@ -12,18 +12,20 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
-#include <BlynkSimpleEsp32.h>
 
 /* Define Blynk authentication token and Wi-Fi credentials */
-#define BLYNK_AUTH "Our_Blynk_Token"
-#define WIFI_SSID "oour_WiFi_SSID"
-#define WIFI_PASS "our_WiFi_Password"
+#define BLYNK_AUTH          "Our_Blynk_Token"
+#define WIFI_SSID           "oour_WiFi_SSID"
+#define WIFI_PASS           "our_WiFi_Password"
+#define ESPNOW_DEBUG_LED    2
 
 /* Structure to hold received sensor data */
 typedef struct {
-    float water_level;
-    float temperature;
+    float water_level_1;
+    float temp;
 } SensorData;
+
+extern volatile bool isRecieved;
 
 /* Function to initialize ESP-NOW communication */
 void ESPNOW_Receiver_Init();

@@ -12,17 +12,20 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
+#include "../common_includes.h"
+
+#define ESPNOW_DEBUG_LED    2
 
 /* Structure to hold sensor data */
 typedef struct {
-    float water_level;  // Water level sensor reading
-    float temperature;  // Temperature sensor reading
+    float32 water_level;  // Water level sensor reading
+    float32 temperature;  // Temperature sensor reading
 } SensorData;
 
 /* Function to initialize ESP-NOW communication */
 void ESPNOW_Sender_Init();
 
 /* Function to send sensor data */
-void ESPNOW_SendData();
+void ESPNOW_SendData(SensorData *Data, uint8 size);
 
 #endif /* ESPNOW_SENDER_H_ */

@@ -11,7 +11,7 @@
 
 #include "../common_includes.h"
 
-#define TRIG_PIN 2
+#define TRIG_PIN 16
 #define ECHO_PIN 4
 
 void HCSR04_init(void);
