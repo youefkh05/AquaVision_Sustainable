@@ -22,6 +22,7 @@ bool isRecieved = false;
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
     Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
+    isRecieved = true;
 }
 
 /*
@@ -32,9 +33,6 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
 void ESPNOW_Receiver_Init()
 {
     WiFi.mode(WIFI_STA); // Set ESP32 to station mode
-
-    // Connect to Wi-Fi and Blynk
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("ESP-NOW Init Failed");

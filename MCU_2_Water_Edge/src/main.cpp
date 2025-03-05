@@ -4,7 +4,7 @@
 
 struct Data : public SensorData
 {
-  float32 water_level2;
+  float32 water_level_2;
 } AllData;
 // Struct to store all data
 
@@ -22,11 +22,11 @@ void setup() {
 
 void loop() {
   // Get Sensor Data
-  AllData.water_level_1 = getDepth_Average_cm(HCSR04);
+  AllData.water_level_2 = getDepth_Average_cm(HCSR04);
 
   Serial.println("Recieveing Data...");
   while(isRecieved == false) {}
-  isRecieved = true;
+  isRecieved = false;
 
   AllData.water_level_1 = receivedData.water_level_1;
   AllData.temp = receivedData.temp;
@@ -39,6 +39,3 @@ void loop() {
   // Send Data to web server
 
 }
-
-//todo: Create ESP Now Recieve Data Call Back Function
-
