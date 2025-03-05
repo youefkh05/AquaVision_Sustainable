@@ -10,11 +10,10 @@ struct Data : public SensorData
 
 //todo: Create Global Struct Variable for data storing
 extern SensorData receivedData;
-extern bool isRecieved;
 
 void setup() {
 
-  void ESPNOW_Receiver_Init();
+  ESPNOW_Receiver_Init();
 
   Sensor_init(HCSR04);
   Serial.begin(9600);
@@ -22,7 +21,7 @@ void setup() {
 
 void loop() {
   // Get Sensor Data
-  AllData.water_level_2 = getDepth_Average_cm(HCSR04);
+  //AllData.water_level_2 = getDepth_Average_cm(HCSR04);
 
   Serial.println("Recieveing Data...");
   while(isRecieved == false) {}
@@ -32,7 +31,7 @@ void loop() {
   AllData.temp = receivedData.temp;
   // Recieve ESPNOW Data: Interrupt
 
-  Serial.printf("Water Level 1: %.2f", AllData.water_level_1);
+  Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
 
   // Display Data on OLED
 

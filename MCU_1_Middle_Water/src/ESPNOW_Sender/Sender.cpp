@@ -10,7 +10,7 @@
 #include "Sender.h"
 
 /* MAC address of the receiver ESP32*/
-uint8_t receiverMAC[] = {0xF0, 0x24, 0xF9, 0x5A, 0x76, 0xCC};
+uint8_t receiverMAC[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 static uint8 indicator_flag = false;
 
 /*

@@ -25,6 +25,8 @@ typedef struct {
     float temp;
 } SensorData;
 
+extern volatile bool isRecieved;
+
 /* Function to initialize ESP-NOW communication */
 void ESPNOW_Receiver_Init();
 
