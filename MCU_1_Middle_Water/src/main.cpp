@@ -7,14 +7,14 @@ SensorData data;
 
 void setup()
 {
-  Sensor_init(HCSR04);
+  Sensor_init(ToF);
   ESPNOW_Sender_Init();
   Serial.begin(9600);
 }
 
 void loop()
 {
-  data.water_level = getDepth_Average_cm(HCSR04); // Measure Water Level
+  data.water_level = getDepth_Average_cm(ToF); // Measure Water Level
   // Todo: Add measure temprature
 
   Serial.println(data.water_level);
