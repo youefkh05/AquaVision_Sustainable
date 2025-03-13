@@ -2,6 +2,7 @@
 #include "Water_Level/Water_Level.h"
 #include "ESPNOW_Reciever/Reciever.h"
 #include "OLED/oled.h"
+#include "Firebase_Sender.h"
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);
 
@@ -52,6 +53,8 @@ void setup()
     /*Intializations*/
   Sensor_init(HCSR04);
   OLED_init();
+  Setup_Firebase();
+  ESPNOW_Receiver_Init();
 
   Serial.begin(9600);
 
@@ -60,7 +63,7 @@ void setup()
   u8g2.setBitmapMode(1);
   u8g2.begin();
 
-  ESPNOW_Receiver_Init();
+  
 }
 
 void loop()
@@ -182,7 +185,7 @@ void loop()
        else if(current_screen==1 && selected==2)
         {  
           u8g2.setFont(u8g2_font_helvB08_tr);//font
-          dtostrf(temp, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
+          dtostrf(depth_1, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
        
           u8g2.setColorIndex(1); // white color
 				  u8g2.drawXBMP(0, 0, 128, 64, temp_measurement);
@@ -215,14 +218,14 @@ void loop()
   /* End of OLED Control********************************************************************************************/
 
   /* Variables Control ***************************************************************************************/
-  temp += 0.05; //? Change
-  if(temp > 40)
-  {
-    temp = 24; //? Change
-  }
-  if ((temp_progress < 124) && (temp < 40)) {
+  // temp += 0.05; //? Change
+  // if(temp > 40)
+  // {
+  //   temp = 24; //? Change
+  // }
+  if ((temp_progress < 124) && (depth_1 < 40)) {
    
-      temp_progress= (temp * 124) / 40;
+      temp_progress= (depth_1 * 124) / 40;
   } else {
       temp_progress = 0;
   }
@@ -241,5 +244,6 @@ void loop()
   /* End of Variables Control ***************************************************************************************/
 
   // Send Data to web server
+  Send_Firebase_Data();
 
 }

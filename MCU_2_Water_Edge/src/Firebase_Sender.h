@@ -48,7 +48,7 @@ FirebaseAuth auth;
 FirebaseConfig config;
 
 void  Setup_Firebase() {
-  Serial.begin(9600);
+  // Serial.begin(9600);
   
   // Connect to Wi-Fi
   WiFi.mode(WIFI_STA);            // essential to share the same WiFi channel with ESP-NOW
@@ -80,23 +80,23 @@ void  Setup_Firebase() {
 
 }
 
-tm GetLocalTime() {
-  struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) {
-      Serial.println("Failed to obtain time");
-      return;
-  }
-  Serial.print("Current time: ");
-  Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");  // Print formatted time
-}
+// tm GetLocalTime() {
+//   struct tm timeinfo;
+//   if (!getLocalTime(&timeinfo)) {
+//       Serial.println("Failed to obtain time");
+//       return;
+//   }
+//   Serial.print("Current time: ");
+//   Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");  // Print formatted time
+// }
 
 void Send_Firebase_Data() {
   FirebaseJson json;
-  tm time = GetLocalTime();
+  // tm time = GetLocalTime();
 
-  json.set("time", getLocalTime(&time));
-  json.set("date", "2025.3.13");
-  json.set("depth1", "21");
+  json.set("time", "Text");
+  json.set("date", "202ameer 13");
+  json.set("depth1", "A");
   json.set("temp1", "30");
   json.set("depth2", "56");
   json.set("temp2", "24");
