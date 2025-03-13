@@ -44,11 +44,10 @@ float32 getDepth_cm(Sensor_Type sensor)
         
         case Waterproof:
         //todo: Call Waterproof sensor distance function and store in distance
-        
             break;
 
         case ToF:
-        getDistanceinCM_VL53L0X();
+            distance = getDistanceinCM_VL53L0X();
             break;
     }
 
