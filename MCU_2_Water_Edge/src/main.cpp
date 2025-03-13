@@ -69,9 +69,11 @@ void loop()
   //AllData.water_level_2 = getDepth_Average_cm(HCSR04);
 
   /* Wait to Recieve ESP NOW Data *******************************************************************************/
-  Serial.println("Recieveing Data...");
-  while(isRecieved == false) {}
-  isRecieved = false;
+
+  // Serial.println("Recieveing Data...");
+  // while(isRecieved == false) {}
+  // isRecieved = false;
+
   /************************************************************************************************************/
 
   // Store Sensor Data in structure
