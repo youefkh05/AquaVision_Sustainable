@@ -53,7 +53,7 @@ void setup()
     /*Intializations*/
   Sensor_init(HCSR04);
   OLED_init();
-  Setup_Firebase();
+  // Setup_Firebase();
   ESPNOW_Receiver_Init();
 
   Serial.begin(9600);
@@ -82,10 +82,12 @@ void loop()
   // Store Sensor Data in structure
   AllData.water_level_1 = receivedData.water_level_1;
   AllData.temp = receivedData.temp;
-  depth_1 = AllData.water_level_1;
+  // depth_1 = AllData.water_level_1;
 
   // Print Water Level
   Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
+  Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
+  Serial.printf("Temprature: %.2f\n", AllData.temp);
 
   /* Button Control ************************************************************************/
   if (current_screen == 0)
@@ -93,7 +95,7 @@ void loop()
     //* Up Button
     if(digitalRead(OLED_BUTTON_UP_PIN )==LOW)
     {
-      delay(200);
+      delay(10);
       selected=selected-1;
       if(selected < 0)
       {
@@ -104,7 +106,7 @@ void loop()
     //* Down Button
     if(digitalRead(OLED_BUTTON_DOWN_PIN)==LOW)
     {
-      delay(200);
+      delay(10);
       selected=selected+1;
       if(selected == n_items)
       {
@@ -127,7 +129,7 @@ void loop()
   //* Enter Button
   if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW))
   { 
-    delay(200);
+    delay(10);
     if (current_screen == 0)
     {
       current_screen = 1;
@@ -223,27 +225,29 @@ void loop()
   // {
   //   temp = 24; //? Change
   // }
-  if ((temp_progress < 124) && (depth_1 < 40)) {
+  if ((temp_progress < 124) && (AllData.temp < 40)) {
    
-      temp_progress= (depth_1 * 124) / 40;
+      temp_progress= (AllData.temp * 124) / 40;
   } else {
       temp_progress = 0;
   }
 
-  depth_1 +=0.05; //? Change
-  if(depth_1 > 20)
-  {
-    depth_1 = 5.5; //? Change
+  // depth_1 +=0.05; //? Change
+  // if(depth_1 > 20)
+  // {
+  //   depth_1 = 5.5; //? Change
+  // }
+  if (progress < 124 && AllData.water_level_1 < 20)
+  { 
+      progress=(AllData.water_level_1 * 124) / 20;
   }
-  if (progress < 124 && depth_1<20) {
-   
-      progress=(depth_1*124)/20;
-  } else {
+  else
+  {
       progress = 0;
   }
   /* End of Variables Control ***************************************************************************************/
 
   // Send Data to web server
-  Send_Firebase_Data();
+  // Send_Firebase_Data();
 
 }

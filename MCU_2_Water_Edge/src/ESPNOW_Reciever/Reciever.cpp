@@ -32,7 +32,7 @@ volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int le
  */
 void ESPNOW_Receiver_Init()
 {
-    // WiFi.mode(WIFI_STA); // Set ESP32 to station mode
+    WiFi.mode(WIFI_STA); // Set ESP32 to station mode
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("ESP-NOW Init Failed\n");

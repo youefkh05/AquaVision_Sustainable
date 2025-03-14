@@ -8,6 +8,7 @@
 
 #include "Water_Level.h"
 #include "../Sensors/HCSR04.h"
+#include "../Sensors/VL53L0X.h"
 
 /***************************************************************************/
 
@@ -24,7 +25,7 @@ void Sensor_init(Sensor_Type sensor)
             break;
 
         case ToF:
-        //todo: Call ToF Sensor init function
+            VL53L0X_init();
             break;
     }
 }
@@ -46,11 +47,12 @@ float32 getDepth_cm(Sensor_Type sensor)
             break;
 
         case ToF:
-        //todo: Call ToF Sensor DIstance function and store in distance
+            distance = getDistanceinCM_VL53L0X();
             break;
     }
 
-    return (CONTAINER_DEPTH_CM - distance);
+    // return (CONTAINER_DEPTH_CM - distance);
+    return distance;
 }
 
 /****************************************************************************************/
