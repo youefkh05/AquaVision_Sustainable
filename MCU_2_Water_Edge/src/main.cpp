@@ -192,7 +192,7 @@ void loop()
        else if(current_screen==1 && selected==2)
         {  
           u8g2.setFont(u8g2_font_helvB08_tr);//font
-          dtostrf(depth_1, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
+          dtostrf(AllData.temp, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
        
           u8g2.setColorIndex(1); // white color
 				  u8g2.drawXBMP(0, 0, 128, 64, temp_measurement);
@@ -207,7 +207,7 @@ void loop()
        else if(current_screen==1 and selected==0)
        {
           u8g2.setFont(u8g2_font_helvB08_tr);//font
-          dtostrf(depth_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
+          dtostrf(AllData.water_level_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
           u8g2.setColorIndex(1); // white color
 				  u8g2.drawXBMP(0, 0, 128, 64, waterlevel_measurement);
 
