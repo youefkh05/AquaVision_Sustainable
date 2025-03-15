@@ -206,18 +206,18 @@ void loop()
         }
        else if(current_screen==1 and selected==0)
        {
-        u8g2.setFont(u8g2_font_helvB08_tr);//font
-       dtostrf(depth_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
-        u8g2.setColorIndex(1); // white color
-				 u8g2.drawXBMP(0, 0, 128, 64, waterlevel_measurement);
+          u8g2.setFont(u8g2_font_helvB08_tr);//font
+          dtostrf(depth_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
+          u8g2.setColorIndex(1); // white color
+				  u8g2.drawXBMP(0, 0, 128, 64, waterlevel_measurement);
 
-				 u8g2.drawStr(25, 55, buffer);
+          u8g2.drawStr(25, 55, buffer);
 
 				  u8g2.setColorIndex(0);
 					u8g2.drawBox(2, 15, 124, 8);
-					 u8g2.setColorIndex(1);
+					u8g2.setColorIndex(1);
 					u8g2.drawBox(2, 16, progress, 6);
-       }
+        }
       
 
     } while (u8g2.nextPage());
@@ -230,10 +230,12 @@ void loop()
   // {
   //   temp = 24; //? Change
   // }
-  if ((temp_progress < 124) && (AllData.temp < 40)) {
-   
+  if ((temp_progress < 124) && (AllData.temp < 40))
+  { 
       temp_progress= (AllData.temp * 124) / 40;
-  } else {
+  }
+  else
+  {
       temp_progress = 0;
   }
 
