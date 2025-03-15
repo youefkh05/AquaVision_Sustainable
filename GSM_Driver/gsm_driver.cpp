@@ -9,20 +9,20 @@
 
 #include "gsm_driver.h"
 
-// Instantiate the HardwareSerial and TinyGsm objects.
-HardwareSerial SerialGSM(2); // UART2
+// Using ESP32 HardwareSerial on UART2
+HardwareSerial SerialGSM(2);
 TinyGsm modem(SerialGSM);
 TinyGsmClient gsm_client(modem);
 
 /*
- * Initializes the GSM module and connects to the network.
+ * Initializes the SIM800L module and connects to the network.
  */
 void gsm_init(void)
 {
-    SerialGSM.begin(9600);
+    SerialGSM.begin(9600, SERIAL_8N1, RXD2, TXD2);
     Serial.println("Initializing GSM...");
 
-    // Power on the GSM module
+    // Power on the SIM800L module
     modem.sendAT("+CFUN=1");
     delay(1000);
 
@@ -39,11 +39,13 @@ void gsm_init(void)
         return;
     }
 
+    // Connect to the GSM network
     if (!gsm_isConnected()) {
         Serial.println("Failed to connect to network.");
         return;
     }
 
+    // Enable GPRS for HTTP requests
     if (!gsm_enableGPRS()) {
         Serial.println("Failed to enable GPRS.");
         return;
@@ -72,19 +74,20 @@ bool gsm_isConnected(void)
 bool gsm_enableGPRS(void)
 {
     Serial.println("Enabling GPRS...");
-
+    
     if (modem.isGprsConnected()) {
         Serial.println("GPRS already enabled.");
         return true;
     }
 
-    for (int i = 0; i < 3; i++) {  // Retry up to 3 times
+    // Try to connect with APN (Modify APN credentials if required)
+    for (int i = 0; i < 3; i++) {
         if (modem.gprsConnect(APN, "", "")) {
             Serial.println("GPRS connected.");
             return true;
         }
         Serial.println("Retrying GPRS connection...");
-        delay(3000); // Increased delay for stability
+        delay(3000);
     }
 
     Serial.println("GPRS connection failed!");
@@ -100,8 +103,3 @@ void gsm_disableGPRS(void)
     modem.gprsDisconnect();
     Serial.println("GPRS disconnected.");
 }
-
-
-
-
-
