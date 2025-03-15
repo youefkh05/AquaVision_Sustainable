@@ -6,15 +6,13 @@
 
 /* Global Variables *****************************************************************/
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
 
 struct Data : public SensorData
 {
   float32 water_level_2;
 } AllData;
 // Struct to store all data
-
-extern SensorData receivedData; // Global Object where Recieved data is stored
 
 Sensor_Type current_sensor = HCSR04; // Global Variable to quickly choose Depth Sensor
 

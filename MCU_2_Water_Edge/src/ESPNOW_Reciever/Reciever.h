@@ -20,12 +20,14 @@
 #define ESPNOW_DEBUG_LED    2
 
 /* Structure to hold received sensor data */
-typedef struct {
+typedef struct
+{
     float water_level_1;
     float temp;
 } SensorData;
 
 extern volatile bool isRecieved;
+extern SensorData receivedData; // Global Object where Recieved data is stored
 
 /* Function to initialize ESP-NOW communication */
 void ESPNOW_Receiver_Init();
