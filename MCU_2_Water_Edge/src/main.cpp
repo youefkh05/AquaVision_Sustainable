@@ -4,6 +4,8 @@
 #include "OLED/oled.h"
 #include "Firebase_Sender.h"
 
+/* Global Variables *****************************************************************/
+
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);
 
 struct Data : public SensorData
@@ -12,8 +14,11 @@ struct Data : public SensorData
 } AllData;
 // Struct to store all data
 
-extern SensorData receivedData;
-// Variable to store recieved data
+extern SensorData receivedData; // Global Object where Recieved data is stored
+
+Sensor_Type current_sensor = HCSR04; // Global Variable to quickly choose Depth Sensor
+
+/***************************************************************************/
 
 /* Menu Variables ***********************************************************/
 
@@ -51,7 +56,7 @@ void setup()
 {
 
     /*Intializations*/
-  Sensor_init(HCSR04);
+  Sensor_init(current_sensor);
   OLED_init();
   // Setup_Firebase();
   ESPNOW_Receiver_Init();
@@ -84,10 +89,12 @@ void loop()
   AllData.temp = receivedData.temp;
   // depth_1 = AllData.water_level_1;
 
+  AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
+
   // Print Water Level
   Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
   Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
-  Serial.printf("Temprature: %.2f\n", AllData.temp);
+  Serial.printf("Temperature: %.2f\n", AllData.temp);
 
   /* Button Control ************************************************************************/
   if (current_screen == 0)
@@ -247,7 +254,7 @@ void loop()
   }
   /* End of Variables Control ***************************************************************************************/
 
-  // Send Data to web server
+  /* Send Data to web server **********************************************************************/
   // Send_Firebase_Data();
 
 }
