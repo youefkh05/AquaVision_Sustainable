@@ -26,7 +26,7 @@ const unsigned char* menu_icons[3] = {
   menu_icon_temp
 };
 
-const int n_items=3;
+const int n_items = 3;
 char items[n_items][20]= {
   {"Water level"},
   {"Battery level"},
@@ -45,7 +45,6 @@ char temp_buffer[10];   // temp_buffer to hold the converted number
 
 //water level measurements
 int progress = 0; //progress bar
-float depth_1  = 0;//variable to increase the progress bar(in cm)
 char buffer[10];   // Buffer to hold the converted number
 
 /*************************************************************************/
@@ -76,6 +75,7 @@ void loop()
 
   /* Wait to Recieve ESP NOW Data *******************************************************************************/
 
+  //! POLLING
   // Serial.println("Recieveing Data...");
   // while(isRecieved == false) {}
   // isRecieved = false;
@@ -85,7 +85,6 @@ void loop()
   // Store Sensor Data in structure
   AllData.water_level_1 = receivedData.water_level_1;
   AllData.temp = receivedData.temp;
-  // depth_1 = AllData.water_level_1;
 
   // AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
 
