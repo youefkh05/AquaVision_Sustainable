@@ -6,7 +6,7 @@
 
 /* Global Variables *****************************************************************/
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
+U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
 
 struct Data : public SensorData
 {
