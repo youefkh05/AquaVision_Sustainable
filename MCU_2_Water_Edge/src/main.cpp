@@ -54,7 +54,7 @@ void setup()
 {
 
     /*Intializations*/
-  Sensor_init(current_sensor);
+  // Sensor_init(current_sensor);
   OLED_init();
   // Setup_Firebase();
   ESPNOW_Receiver_Init();
@@ -87,7 +87,7 @@ void loop()
   AllData.temp = receivedData.temp;
   // depth_1 = AllData.water_level_1;
 
-  AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
+  // AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
 
   // Print Water Level
   Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
@@ -98,51 +98,76 @@ void loop()
   if (current_screen == 0)
   {
     //* Up Button
-    if(digitalRead(OLED_BUTTON_UP_PIN )==LOW)
+    if(digitalRead(OLED_BUTTON_UP_PIN) == LOW) // Check if Button is pressed
     {
-      delay(10);
-      selected=selected-1;
-      if(selected < 0)
+      delay(10);  // Debounce
+      if(digitalRead(OLED_BUTTON_UP_PIN) == LOW) // Check if Button is still pressed
       {
-        selected=n_items-1;
+        selected=selected-1;
+        if(selected < 0)
+        {
+          selected = n_items-1;
+        }
+      }
+
+      while(digitalRead(OLED_BUTTON_UP_PIN) == LOW)
+      {
+        // Wait for Button Release
       }
     }
     
     //* Down Button
-    if(digitalRead(OLED_BUTTON_DOWN_PIN)==LOW)
+    if(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW) // Check if Button is pressed
     {
-      delay(10);
-      selected=selected+1;
-      if(selected == n_items)
+      delay(10); // Debounce
+      if(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW) // Check if Button is still pressed
       {
-        selected=0;
+        selected=selected+1;
+        if(selected == n_items)
+        {
+          selected = 0;
+        }
+      }
+      
+      while(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW)
+      {
+        // Wait for Button Release
       }
     }
     
-    previous=selected-1;
+    // Control Previous and Next
+    previous = selected - 1;
     if(previous < 0)
     {
-      previous=n_items-1;
+      previous = n_items - 1;
     }
-    next=selected+1;
+    next = selected + 1;
     if(next >= n_items)
     {
-      next=0;
+      next = 0;
     }
   }
     
   //* Enter Button
-  if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW))
+  if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)) // Check if Button is pressed
   { 
-    delay(10);
-    if (current_screen == 0)
+    delay(10); // Debounce
+    if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)) // Check if Button is still pressed
     {
-      current_screen = 1;
-    } 
-    else if (current_screen == 1)
+      if (current_screen == 0)
+      {
+        current_screen = 1;
+      } 
+      else if (current_screen == 1)
+      {
+        current_screen = 0;
+      } 
+    }
+
+    while(digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)
     {
-      current_screen = 0;
-    } 
+      // Wait for Button Release
+    }
   }
   /* End of Buttons ****************************************************************************************/
 
