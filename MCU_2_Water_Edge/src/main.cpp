@@ -80,6 +80,13 @@ void loop()
   // while(isRecieved == false) {}
   // isRecieved = false;
 
+  // Control Debug LED
+  if(isRecieved == true)
+  {
+    digitalWrite(ESPNOW_DEBUG_LED, LOW);
+    isRecieved = false;
+  }
+
   /************************************************************************************************************/
 
   // Store Sensor Data in structure
