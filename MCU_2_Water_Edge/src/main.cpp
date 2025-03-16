@@ -14,7 +14,7 @@ struct Data : public SensorData
 } AllData;
 // Struct to store all data
 
-Sensor_Type current_sensor = HCSR04; // Global Variable to quickly choose Depth Sensor
+Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
 
 /***************************************************************************/
 
