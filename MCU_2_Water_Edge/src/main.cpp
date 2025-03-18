@@ -6,7 +6,7 @@
 
 /* Global Variables *****************************************************************/
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
+U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
 
 struct Data : public SensorData
 {
@@ -14,7 +14,7 @@ struct Data : public SensorData
 } AllData;
 // Struct to store all data
 
-Sensor_Type current_sensor = HCSR04; // Global Variable to quickly choose Depth Sensor
+Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
 
 /***************************************************************************/
 
@@ -26,7 +26,7 @@ const unsigned char* menu_icons[3] = {
   menu_icon_temp
 };
 
-const int n_items=3;
+const int n_items = 3;
 char items[n_items][20]= {
   {"Water level"},
   {"Battery level"},
@@ -45,7 +45,6 @@ char temp_buffer[10];   // temp_buffer to hold the converted number
 
 //water level measurements
 int progress = 0; //progress bar
-float depth_1  = 0;//variable to increase the progress bar(in cm)
 char buffer[10];   // Buffer to hold the converted number
 
 /*************************************************************************/
@@ -54,7 +53,7 @@ void setup()
 {
 
     /*Intializations*/
-  Sensor_init(current_sensor);
+  // Sensor_init(current_sensor);
   OLED_init();
 
   //connect_WiFi();
@@ -78,18 +77,25 @@ void loop()
 
   /* Wait to Recieve ESP NOW Data *******************************************************************************/
 
+  //! POLLING
   // Serial.println("Recieveing Data...");
   // while(isRecieved == false) {}
   // isRecieved = false;
+
+  // Control Debug LED
+  if(isRecieved == true)
+  {
+    digitalWrite(ESPNOW_DEBUG_LED, LOW);
+    isRecieved = false;
+  }
 
   /************************************************************************************************************/
 
   // Store Sensor Data in structure
   AllData.water_level_1 = receivedData.water_level_1;
   AllData.temp = receivedData.temp;
-  // depth_1 = AllData.water_level_1;
 
-  AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
+  // AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
 
   // Print Water Level
   Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
@@ -100,51 +106,76 @@ void loop()
   if (current_screen == 0)
   {
     //* Up Button
-    if(digitalRead(OLED_BUTTON_UP_PIN )==LOW)
+    if(digitalRead(OLED_BUTTON_UP_PIN) == LOW) // Check if Button is pressed
     {
-      delay(10);
-      selected=selected-1;
-      if(selected < 0)
+      delay(10);  // Debounce
+      if(digitalRead(OLED_BUTTON_UP_PIN) == LOW) // Check if Button is still pressed
       {
-        selected=n_items-1;
+        selected=selected-1;
+        if(selected < 0)
+        {
+          selected = n_items-1;
+        }
+      }
+
+      while(digitalRead(OLED_BUTTON_UP_PIN) == LOW)
+      {
+        // Wait for Button Release
       }
     }
     
     //* Down Button
-    if(digitalRead(OLED_BUTTON_DOWN_PIN)==LOW)
+    if(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW) // Check if Button is pressed
     {
-      delay(10);
-      selected=selected+1;
-      if(selected == n_items)
+      delay(10); // Debounce
+      if(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW) // Check if Button is still pressed
       {
-        selected=0;
+        selected=selected+1;
+        if(selected == n_items)
+        {
+          selected = 0;
+        }
+      }
+      
+      while(digitalRead(OLED_BUTTON_DOWN_PIN) == LOW)
+      {
+        // Wait for Button Release
       }
     }
     
-    previous=selected-1;
+    // Control Previous and Next
+    previous = selected - 1;
     if(previous < 0)
     {
-      previous=n_items-1;
+      previous = n_items - 1;
     }
-    next=selected+1;
+    next = selected + 1;
     if(next >= n_items)
     {
-      next=0;
+      next = 0;
     }
   }
     
   //* Enter Button
-  if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW))
+  if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)) // Check if Button is pressed
   { 
-    delay(10);
-    if (current_screen == 0)
+    delay(10); // Debounce
+    if ((digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)) // Check if Button is still pressed
     {
-      current_screen = 1;
-    } 
-    else if (current_screen == 1)
+      if (current_screen == 0)
+      {
+        current_screen = 1;
+      } 
+      else if (current_screen == 1)
+      {
+        current_screen = 0;
+      } 
+    }
+
+    while(digitalRead(OLED_BUTTON_SELECT_PIN) == LOW)
     {
-      current_screen = 0;
-    } 
+      // Wait for Button Release
+    }
   }
   /* End of Buttons ****************************************************************************************/
 
@@ -194,7 +225,7 @@ void loop()
        else if(current_screen==1 && selected==2)
         {  
           u8g2.setFont(u8g2_font_helvB08_tr);//font
-          dtostrf(depth_1, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
+          dtostrf(AllData.temp, 6, 2, temp_buffer);  // Width = 6, Precision = 2 decimal places
        
           u8g2.setColorIndex(1); // white color
 				  u8g2.drawXBMP(0, 0, 128, 64, temp_measurement);
@@ -209,7 +240,7 @@ void loop()
        else if(current_screen==1 and selected==0)
        {
           u8g2.setFont(u8g2_font_helvB08_tr);//font
-          dtostrf(depth_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
+          dtostrf(AllData.water_level_1, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
           u8g2.setColorIndex(1); // white color
 				  u8g2.drawXBMP(0, 0, 128, 64, waterlevel_measurement);
 

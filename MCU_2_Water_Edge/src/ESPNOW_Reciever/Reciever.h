@@ -12,6 +12,7 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
+#include "../common_includes.h"
 
 /* Define Blynk authentication token and Wi-Fi credentials */
 #define BLYNK_AUTH          "Our_Blynk_Token"
@@ -22,8 +23,8 @@
 /* Structure to hold received sensor data */
 typedef struct
 {
-    float water_level_1;
-    float temp;
+    float32 water_level_1;
+    float32 temp;
 } SensorData;
 
 extern volatile bool isRecieved;

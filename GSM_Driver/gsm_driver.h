@@ -18,18 +18,22 @@
 // Define SIM800L module for TinyGSM
 #define TINY_GSM_MODEM_SIM800
 
-// HardwareSerial for ESP32 (Using UART2 by default)
+// ESP32 UART2 Pins for SIM800L (Make sure these match your wiring)
+#define RXD2 16  // GPIO16 (ESP32 RX2)
+#define TXD2 17  // GPIO17 (ESP32 TX2)
+
+// Declare GSM objects globally
 extern HardwareSerial SerialGSM;
 extern TinyGsm modem;
 extern TinyGsmClient gsm_client;
 
-// APN for your GSM network (replace with your provider's APN)
+// APN for your GSM network (Replace "your_apn" with your actual APN)
 #define APN "your_apn"
 
 /* Initializes the GSM module */
 void gsm_init(void);
 
-/* Checks whether the SIM800L module is connected to the mobile network */
+/* Checks if the SIM800L module is connected to the mobile network */
 bool gsm_isConnected(void);
 
 /* Enables GPRS for internet connectivity */
@@ -39,4 +43,3 @@ bool gsm_enableGPRS(void);
 void gsm_disableGPRS(void);
 
 #endif /* GSM_DRIVER_H_ */
-

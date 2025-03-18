@@ -21,8 +21,9 @@ volatile bool isRecieved = false;
  */
 volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
+    digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate data reception
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
-    Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
+    // Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
     isRecieved = true;
 }
 
@@ -34,6 +35,7 @@ void ESPNOW_Receiver_Init()
 {
     WiFi.mode(WIFI_STA); // Set ESP32 to station mode
 
+    digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate ESP-NOW initialization
     if (esp_now_init() != ESP_OK) {
         Serial.println("ESP-NOW Init Failed\n");
         return;
