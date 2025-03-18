@@ -6,32 +6,32 @@
  *
  *  This file defines the receiver ESP32's functions and data structures.
  */
+#ifndef RECIEVER_H
+#define RECIEVER_H
 
-#ifndef ESPNOW_RECEIVER_H_
-#define ESPNOW_RECEIVER_H_
-
+#include "common_includes.h"
 #include <esp_now.h>
 #include <WiFi.h>
-#include "../common_includes.h"
 
-/* Define Blynk authentication token and Wi-Fi credentials */
-#define BLYNK_AUTH          "Our_Blynk_Token"
-#define WIFI_SSID           "oour_WiFi_SSID"
-#define WIFI_PASS           "our_WiFi_Password"
-#define ESPNOW_DEBUG_LED    2
-
-/* Structure to hold received sensor data */
-typedef struct
-{
-    float32 water_level_1;
-    float32 temp;
+/*
+   SensorData structure definition.
+   (This structure holds the sensor data received via ESP-NOW.)
+*/
+typedef struct {
+    float water_level_1;
+    float temp;
 } SensorData;
 
-extern volatile bool isRecieved;
-extern SensorData receivedData; // Global Object where Recieved data is stored
+// Extern declarations for global variables used in the Reciever module
+extern SensorData receivedData;
+extern volatile bool isReceived;
 
-/* Function to initialize ESP-NOW communication */
+/*
+   Function Prototypes
+*/
 void ESPNOW_Receiver_Init();
+void Enable_WiFi();
+void Enable_ESPNow();
 
-#endif /* ESPNOW_RECEIVER_H_ */
+#endif // RECIEVER_H
 
