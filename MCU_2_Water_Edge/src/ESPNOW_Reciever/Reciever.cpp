@@ -21,7 +21,7 @@ volatile bool isRecieved = false;
  */
 volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-    digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate data reception
+    //digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate data reception
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
     // Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
     isRecieved = true;
@@ -35,7 +35,7 @@ void ESPNOW_Receiver_Init()
 {
     WiFi.mode(WIFI_STA); // Set ESP32 to station mode
 
-    digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate ESP-NOW initialization
+    //digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate ESP-NOW initialization
     if (esp_now_init() != ESP_OK) {
         Serial.println("ESP-NOW Init Failed\n");
         return;
@@ -43,6 +43,31 @@ void ESPNOW_Receiver_Init()
 
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv)); // Register receive callback
 }
+
+// void Enable_WiFi()
+// {
+//     WiFi.mode(WIFI_STA);              // >>> HIGHLIGHT: Ensure STA mode remains active
+//     WiFi.begin("WIFI_SSID", "WIFI_PASSWORD"); // >>> HIGHLIGHT: Replace with  actual credentials
+
+//     while (WiFi.status() != WL_CONNECTED) {
+//         Serial.println("Connecting to WiFi for Firebase...");
+//         delay(1000);
+//     }
+//     Serial.println("WiFi Connected for Firebase!");  // >>> HIGHLIGHT: WiFi connection established
+// }
+
+/*
+ * Switches back to ESP-NOW mode after Firebase upload.
+ * >>> HIGHLIGHT: Disconnects from the WiFi network to resume ESP-NOW operation.
+ */
+void Enable_ESPNow()
+{
+    WiFi.disconnect(true);  // >>> HIGHLIGHT: Disconnect from WiFi to prevent interference with ESP-NOW
+    WiFi.mode(WIFI_STA);      // >>> HIGHLIGHT: Maintain STA mode for ESP-NOW
+    Serial.println("Switched back to ESP-NOW mode (WiFi disconnected).");  // >>> HIGHLIGHT: Confirmation message
+}
+
+
 
 
 
