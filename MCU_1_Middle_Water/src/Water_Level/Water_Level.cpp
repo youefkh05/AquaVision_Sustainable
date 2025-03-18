@@ -9,7 +9,7 @@
 #include "Water_Level.h"
 #include "../Sensors/HCSR04.h"
 #include "../Sensors/VL53L0X.h"
-
+#include "../Sensors/JSN_SR04.h"
 /***************************************************************************/
 
 void Sensor_init(Sensor_Type sensor)
@@ -21,7 +21,7 @@ void Sensor_init(Sensor_Type sensor)
             break;
         
         case Waterproof:
-        //todo: Call Waterproof sensor init function
+            init_JSN_SR04();
             break;
 
         case ToF:
@@ -43,7 +43,7 @@ float32 getDepth_cm(Sensor_Type sensor)
             break;
         
         case Waterproof:
-        //todo: Call Waterproof sensor distance function and store in distance
+            distance = get_distance_JSN_SR04();
             break;
 
         case ToF:
