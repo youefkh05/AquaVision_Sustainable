@@ -46,7 +46,7 @@ void ESPNOW_Sender_Init()
     //todo: Work on finding a way to not make the MAC Address hard coded
     esp_now_peer_info_t peerInfo = {};
     memcpy(peerInfo.peer_addr, receiverMAC, 6); // Set receiver MAC address
-    peerInfo.channel = 0;
+    peerInfo.channel = 10;
     peerInfo.encrypt = false;
 
     while(esp_now_add_peer(&peerInfo) != ESP_OK)
