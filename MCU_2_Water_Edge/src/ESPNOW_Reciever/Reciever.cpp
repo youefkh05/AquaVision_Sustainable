@@ -44,5 +44,30 @@ void ESPNOW_Receiver_Init()
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv)); // Register receive callback
 }
 
+// void Enable_WiFi()
+// {
+//     WiFi.mode(WIFI_STA);              // >>> HIGHLIGHT: Ensure STA mode remains active
+//     WiFi.begin("WIFI_SSID", "WIFI_PASSWORD"); // >>> HIGHLIGHT: Replace with  actual credentials
+
+//     while (WiFi.status() != WL_CONNECTED) {
+//         Serial.println("Connecting to WiFi for Firebase...");
+//         delay(1000);
+//     }
+//     Serial.println("WiFi Connected for Firebase!");  // >>> HIGHLIGHT: WiFi connection established
+// }
+
+/*
+ * Switches back to ESP-NOW mode after Firebase upload.
+ * >>> HIGHLIGHT: Disconnects from the WiFi network to resume ESP-NOW operation.
+ */
+void Enable_ESPNow()
+{
+    WiFi.disconnect(true);  // >>> HIGHLIGHT: Disconnect from WiFi to prevent interference with ESP-NOW
+    WiFi.mode(WIFI_STA);      // >>> HIGHLIGHT: Maintain STA mode for ESP-NOW
+    Serial.println("Switched back to ESP-NOW mode (WiFi disconnected).");  // >>> HIGHLIGHT: Confirmation message
+}
+
+
+
 
 

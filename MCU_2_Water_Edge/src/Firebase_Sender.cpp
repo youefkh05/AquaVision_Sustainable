@@ -1,5 +1,6 @@
 #include "Firebase_Sender.h"
 #include "esp_wifi.h"
+#include "ESPNOW_Reciever/Reciever.h"
 
 // Firebase objects
 FirebaseData fbdo;
@@ -86,13 +87,4 @@ void Send_Firebase_Data(float depth1, float temp1, float depth2, float temp2)
     }
 }
 
-/*
- * Switches back to ESP-NOW mode after Firebase upload.
- * >>> Disconnects WiFi to prevent conflicts with ESP-NOW.
- */
-void Enable_ESPNow()
-{
-    WiFi.disconnect(true);  // Disconnect WiFi from router
-    WiFi.mode(WIFI_STA);    // Keep STA mode for ESP-NOW
-    Serial.println("Switched back to ESP-NOW mode (WiFi disconnected).");
-}
+

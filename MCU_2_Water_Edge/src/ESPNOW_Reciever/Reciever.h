@@ -13,6 +13,8 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#define ESPNOW_DEBUG_LED 2
+
 /*
    SensorData structure definition.
    (This structure holds the sensor data received via ESP-NOW.)
@@ -24,13 +26,13 @@ typedef struct {
 
 // Extern declarations for global variables used in the Reciever module
 extern SensorData receivedData;
-extern volatile bool isReceived;
+extern volatile bool isRecieved;
 
 /*
    Function Prototypes
 */
 void ESPNOW_Receiver_Init();
-void Enable_WiFi();
+// void Enable_WiFi();
 void Enable_ESPNow();
 
 #endif // RECIEVER_H
