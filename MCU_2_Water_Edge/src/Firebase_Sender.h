@@ -9,8 +9,8 @@
 #include <WiFi.h>
 #include <FirebaseESP32.h>
 
-const char* ssid = "H10P";                                   //AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- Tp-LINK_B238
-const char* password = "@amir@2005@";    //A123456a      -- open                -- open              -- 90701702
+const char* ssid = "Tp-LINK_B238";    //AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- Tp-LINK_B238
+const char* password = "90701702";    //A123456a      -- open                -- open              -- 90701702
 
 // Firebase credentials
 #define API_KEY "AIzaSyC-D17GV3prkmQDssF9ZbXiKGQq2-XLsiE"
@@ -47,28 +47,31 @@ FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
+void connect_WiFi(){
+
+   // Connect to Wi-Fi
+   WiFi.mode(WIFI_STA);            // essential to share the same WiFi channel with ESP-NOW
+   WiFi.setSleep(false);
+   if(password=="open"){
+     WiFi.begin(ssid);             // for open networks
+   }
+   else {
+     WiFi.begin(ssid, password);  // for secured networks
+   }
+ 
+ 
+   while (WiFi.status() != WL_CONNECTED) {
+     delay(1000);
+     Serial.println("Connecting to WiFi...");
+   }
+   Serial.println("__WiFi Connected!__");
+ 
+   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+}
 void  Setup_Firebase() {
   // Serial.begin(9600);
   
-  // Connect to Wi-Fi
-  WiFi.mode(WIFI_STA);            // essential to share the same WiFi channel with ESP-NOW
-
-  if(password=="open"){
-    WiFi.begin(ssid);             // for open networks
-  }
-  else {
-    WiFi.begin(ssid, password);  // for secured networks
-  }
-
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-  Serial.println("__WiFi Connected!__");
-
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-
   // Initialize Firebase
   config.api_key = API_KEY;
   auth.user.email = USER_EMAIL;

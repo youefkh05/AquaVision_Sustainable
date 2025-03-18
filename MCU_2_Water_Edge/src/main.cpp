@@ -56,8 +56,10 @@ void setup()
     /*Intializations*/
   Sensor_init(current_sensor);
   OLED_init();
-  // Setup_Firebase();
+
+  //connect_WiFi();
   ESPNOW_Receiver_Init();
+  //Setup_Firebase();
 
   Serial.begin(9600);
 
