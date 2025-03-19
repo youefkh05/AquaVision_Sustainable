@@ -4,10 +4,11 @@
 #include "Sensors/temp_sensor.h"
 
 SensorData data;
+Sensor_Type CurrentSensor = HCSR04;
 
 void setup()
 {
-  Sensor_init(HCSR04);
+  Sensor_init(CurrentSensor);
   ESPNOW_Sender_Init();
   Temp_init();
   Serial.begin(9600);
@@ -15,7 +16,7 @@ void setup()
 
 void loop()
 {
-  data.water_level = getDepth_Average_cm(HCSR04); // Measure Water Level
+  data.water_level = getDepth_Average_cm(CurrentSensor); // Measure Water Level
   data.temperature = Temp_getTempC();
   // Todo: Add measure temprature
 
