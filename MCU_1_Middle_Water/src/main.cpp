@@ -18,7 +18,6 @@ void loop()
 {
   data.water_level = getDepth_Average_cm(CurrentSensor); // Measure Water Level
   data.temperature = Temp_getTempC();
-  // Todo: Add measure temprature
 
   Serial.println(data.water_level);
   Serial.println(data.temperature);
