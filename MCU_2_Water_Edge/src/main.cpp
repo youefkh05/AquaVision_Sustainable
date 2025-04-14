@@ -55,9 +55,9 @@ void setup()
     /*Intializations*/
   // Sensor_init(current_sensor);
   OLED_init();
-  // Setup_Firebase();
+  Setup_Firebase();
   ESPNOW_Receiver_Init();
-
+  Setup_Coexistence();
   Serial.begin(9600);
 
     /*Oled Config*/
@@ -289,7 +289,7 @@ void loop()
 
   // /* 🔹 Enable WiFi and send data to Firebase */
   // Enable_WiFi();
-  // Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+   Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
 
   // /* 🔹 Switch back to ESP-NOW mode (Disconnect WiFi from router) */
   // Enable_ESPNow();
