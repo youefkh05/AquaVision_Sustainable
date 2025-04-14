@@ -85,6 +85,14 @@ void Send_Firebase_Data(float depth1, float temp1, float depth2, float temp2)
         Serial.println("❌ Failed to upload JSON:");
         Serial.println(fbdo.errorReason());
     }
+   
+
 }
 
-
+void Setup_Coexistence() {
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    esp_wifi_init(&cfg);
+    esp_wifi_set_storage(WIFI_STORAGE_RAM);
+    esp_wifi_set_ps(WIFI_PS_NONE);  // Disable power saving for stable operation
+    Serial.println("✅ WiFi and ESP-NOW Coexistence Mode Enabled!");
+}
