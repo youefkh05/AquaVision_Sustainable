@@ -56,7 +56,7 @@ void setup()
 {
 
     /*Intializations*/
-  // Sensor_init(current_sensor);
+  Sensor_init(current_sensor);
   OLED_init();
   // Setup_Firebase();
   ESPNOW_Receiver_Init();
@@ -74,7 +74,7 @@ void setup()
 void loop()
 {
   // Get Sensor Data
-  //AllData.water_level_2 = getDepth_Average_cm(HCSR04);
+  AllData.water_level_2 = getDepth_Average_cm(current_sensor);
 
   /* Wait to Recieve ESP NOW Data *******************************************************************************/
 
