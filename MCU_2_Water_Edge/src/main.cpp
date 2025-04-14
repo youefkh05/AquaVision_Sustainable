@@ -15,6 +15,7 @@ struct Data : public SensorData
 // Struct to store all data
 
 Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
+bool measureData = false; // Flag to measure data
 
 /***************************************************************************/
 
@@ -56,7 +57,10 @@ void setup()
 {
 
     /*Intializations*/
-  Sensor_init(current_sensor);
+  if(measureData == true)
+  {
+    Sensor_init(current_sensor);
+  }
   OLED_init();
   Setup_Firebase();
   ESPNOW_Receiver_Init();
@@ -74,7 +78,11 @@ void setup()
 void loop()
 {
   // Get Sensor Data
-  AllData.water_level_2 = getDepth_Average_cm(current_sensor);
+  if(measureData == true)
+  {
+    AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
+  }
+  
 
   /* Wait to Recieve ESP NOW Data *******************************************************************************/
 
