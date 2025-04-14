@@ -28,8 +28,8 @@ const unsigned char* menu_icons[3] = {
 
 const int n_items = 3;
 char items[n_items][20]= {
-  {"Water level"},
-  {"Battery level"},
+  {"Water level 1"},
+  {"Water level 2"},
   {"Temperature"} 
 };
 
@@ -46,6 +46,9 @@ char temp_buffer[10];   // temp_buffer to hold the converted number
 //water level measurements
 int progress = 0; //progress bar
 char buffer[10];   // Buffer to hold the converted number
+//water level_2 measurements
+int progress2 = 0; //progress bar
+char buffer2[10];   // Buffer to hold the converted number
 
 /*************************************************************************/
 
@@ -249,6 +252,20 @@ void loop()
 					u8g2.setColorIndex(1);
 					u8g2.drawBox(2, 16, progress, 6);
         }
+        else if(current_screen==1 and selected==1)
+       {
+          u8g2.setFont(u8g2_font_helvB08_tr);//font
+          dtostrf(AllData.water_level_2, 6, 2, buffer);  // Width = 6, Precision = 2 decimal places
+          u8g2.setColorIndex(1); // white color
+				  u8g2.drawXBMP(0, 0, 128, 64, waterlevel_measurement);
+
+          u8g2.drawStr(25, 55, buffer2);
+
+				  u8g2.setColorIndex(0);
+					u8g2.drawBox(2, 15, 124, 8);
+					u8g2.setColorIndex(1);
+					u8g2.drawBox(2, 16, progress2, 6);
+        }
       
 
     } while (u8g2.nextPage());
@@ -275,14 +292,24 @@ void loop()
   // {
   //   depth_1 = 5.5; //? Change
   // }
-  if (progress < 124 && AllData.water_level_1 < 20)
+  if (progress < 124 && AllData.water_level_1 < 28)
   { 
-      progress=(AllData.water_level_1 * 124) / 20;
+      progress=(AllData.water_level_1 * 124) / 28;
   }
   else
   {
       progress = 0;
   }
+
+  if (progress2 < 124 && AllData.water_level_2 < 28)
+  { 
+      progress2=(AllData.water_level_2 * 124) / 28;
+  }
+  else
+  {
+      progress = 0;
+  }
+
   /* End of Variables Control ***************************************************************************************/
 
   /* Send Data to web server **********************************************************************/
@@ -292,6 +319,6 @@ void loop()
   // Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
 
   // /* 🔹 Switch back to ESP-NOW mode (Disconnect WiFi from router) */
-  // Enable_ESPNow();
+  // Enable_ESPNow();`
 
 }
