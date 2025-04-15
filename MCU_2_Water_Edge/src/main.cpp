@@ -15,7 +15,7 @@ struct Data : public SensorData
 // Struct to store all data
 
 Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
-bool measureData = false; // Flag to measure data
+bool measureData = true; // Flag to measure data
 
 /***************************************************************************/
 
@@ -55,17 +55,16 @@ char buffer2[10];   // Buffer to hold the converted number
 
 void setup()
 {
-
+  Serial.begin(9600);
     /*Intializations*/
   if(measureData == true)
   {
     Sensor_init(current_sensor);
   }
   OLED_init();
-  Setup_Firebase();
   ESPNOW_Receiver_Init();
+  Setup_Firebase();
   Setup_Coexistence();
-  Serial.begin(9600);
 
     /*Oled Config*/
   u8g2.setColorIndex(1);  //white color
