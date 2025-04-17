@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "Water_Level/Water_Level.h"
-#include "ESPNOW_Reciever/Reciever.h"
 #include "OLED/oled.h"
 #include "Firebase_Sender.h"
 
@@ -8,11 +7,8 @@
 
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
 
-struct Data : public SensorData
-{
-  float32 water_level_2;
-} AllData;
-// Struct to store all data
+Data AllData;
+// Struct to store all data initialization
 
 Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
 bool measureData = true; // Flag to measure data
@@ -63,6 +59,7 @@ void setup()
   }
   OLED_init();
   ESPNOW_Receiver_Init();
+  delay(700);
   Setup_Firebase();
   Setup_Coexistence();
 
@@ -70,7 +67,6 @@ void setup()
   u8g2.setColorIndex(1);  //white color
   u8g2.setBitmapMode(1);
   u8g2.begin();
-
   
 }
 
@@ -189,6 +185,7 @@ void loop()
 
 
   /* OLED Section *******************************************************************************/
+  u8g2.setAutoPageClear(1);
   u8g2.firstPage();       
     do
     { 
@@ -276,6 +273,7 @@ void loop()
       
 
     } while (u8g2.nextPage());
+    u8g2.setAutoPageClear(0);
   
   /* End of OLED Control********************************************************************************************/
 
@@ -323,7 +321,7 @@ void loop()
 
   // /* 🔹 Enable WiFi and send data to Firebase */
   // Enable_WiFi();
-   Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+  //  Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
 
   // /* 🔹 Switch back to ESP-NOW mode (Disconnect WiFi from router) */
   // Enable_ESPNow();`

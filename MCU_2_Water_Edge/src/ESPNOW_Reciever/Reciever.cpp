@@ -8,6 +8,7 @@
  */
 
 #include "Reciever.h"
+#include "../Water_Level/Water_Level.h"
 
 /* Variable to hold received sensor data */
 SensorData receivedData;
@@ -25,6 +26,9 @@ volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int le
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
     // Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
     isRecieved = true;
+
+    Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+    // Send Data to Firebase
 }
 
 /*

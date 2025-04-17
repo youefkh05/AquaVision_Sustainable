@@ -9,6 +9,8 @@
 #define WATER_LEVEL_H
 
 #include "../common_includes.h"
+#include "../ESPNOW_Reciever/Reciever.h"
+
 
 #define CONTAINER_DEPTH_CM      15
 #define AVERAGE_NUM             5
@@ -20,6 +22,12 @@ typedef enum
     ToF
 } Sensor_Type;
 
+struct Data : public SensorData
+{
+  float32 water_level_2;
+};
+
+extern Data AllData; 
 //todo: Add Structure data type to hold measured data
 
 void Sensor_init(Sensor_Type sensor);
