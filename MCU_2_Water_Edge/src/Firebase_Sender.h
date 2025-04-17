@@ -12,8 +12,8 @@
 #include <FirebaseESP32.h>
 
 /* WiFi Credentials */
-#define WIFI_SSID "AndroidAPCCB0"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238
-#define WIFI_PASSWORD "A123456a" // A123456a -- open -- open -- 90701702
+#define WIFI_SSID "ZXHNH168N"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- ZXHNH168N
+#define WIFI_PASSWORD "DHBZhF8$92bL" // A123456a -- open -- open -- 90701702 -- DHBZhF8$92bL
 
 /* Firebase Credentials */
 #define API_KEY "AIzaSyC-D17GV3prkmQDssF9ZbXiKGQq2-XLsiE"

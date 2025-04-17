@@ -11,8 +11,8 @@
 
 #include "../common_includes.h"
 
-#define TRIG_PIN 16
-#define ECHO_PIN 4
+#define TRIG_PIN 5
+#define ECHO_PIN 18
 
 void HCSR04_init(void);
 // Intializes the Sensors

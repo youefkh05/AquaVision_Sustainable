@@ -24,6 +24,8 @@ void loop()
 
   ESPNOW_SendData(&data, sizeof(data));
   // ESP NOW Send Data
+
+  delay(1000); // Delay for 1 second
 }
 
 

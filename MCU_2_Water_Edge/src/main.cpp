@@ -15,7 +15,7 @@ struct Data : public SensorData
 // Struct to store all data
 
 Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
-bool measureData = false; // Flag to measure data
+bool measureData = true; // Flag to measure data
 
 /***************************************************************************/
 
