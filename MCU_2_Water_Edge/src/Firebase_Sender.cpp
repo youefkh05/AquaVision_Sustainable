@@ -79,7 +79,7 @@ void Send_Firebase_Data(float depth1, float temp1, float depth2, float temp2)
 
     Serial.println("Uploading data to Firebase...");
 
-    if (Firebase.pushJSONAsync(fbdo, "/sensors/data", json)) {
+    if (Firebase.pushJSON(fbdo, "/sensors/data", json)) {
         Serial.println("✅ JSON Data Uploaded Successfully!");
     } else {
         Serial.println("❌ Failed to upload JSON:");
