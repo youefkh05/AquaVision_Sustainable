@@ -316,7 +316,11 @@ void loop()
 
   // /* 🔹 Enable WiFi and send data to Firebase */
   // Enable_WiFi();
-  //  Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+  if(isRecieved == true)
+  {
+    Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+    isRecieved = false; // Reset the flag after sending data
+  }
 
   // /* 🔹 Switch back to ESP-NOW mode (Disconnect WiFi from router) */
   // Enable_ESPNow();`

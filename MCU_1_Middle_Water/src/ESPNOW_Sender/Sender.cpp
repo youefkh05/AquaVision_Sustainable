@@ -30,7 +30,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
  */
 void ESPNOW_Sender_Init()
 {
-    WiFi.mode(WIFI_STA); // Set ESP32 to station mode for ESP-NOW
+    WiFi.mode(WIFI_AP_STA); // Set ESP32 to station mode for ESP-NOW
     pinMode(ESPNOW_DEBUG_LED, OUTPUT);
 
     while (esp_now_init() != ESP_OK) {
