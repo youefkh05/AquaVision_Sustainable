@@ -27,6 +27,10 @@ volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int le
     // Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
     isRecieved = true;
 
+      // Print Water Level
+    Serial.printf("\nWater Level 1: %.2f\n", AllData.water_level_1);
+    Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
+    Serial.printf("Temperature: %.2f\n\n", AllData.temp);
     Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
     // Send Data to Firebase
 }

@@ -101,11 +101,6 @@ void loop()
 
   // AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
 
-  // Print Water Level
-  Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
-  Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
-  Serial.printf("Temperature: %.2f\n", AllData.temp);
-
   /* Button Control ************************************************************************/
   if (current_screen == 0)
   {
@@ -273,7 +268,7 @@ void loop()
       
 
     } while (u8g2.nextPage());
-    u8g2.setAutoPageClear(0);
+    u8g2.setAutoPageClear(1);
   
   /* End of OLED Control********************************************************************************************/
 
@@ -303,7 +298,7 @@ void loop()
   }
   else
   {
-      progress = 0;
+      // progress = 0;
   }
 
   if (progress2 < 124 && AllData.water_level_2 < 28)
@@ -312,7 +307,7 @@ void loop()
   }
   else
   {
-      progress = 0;
+      // progress2 = 0;
   }
 
   /* End of Variables Control ***************************************************************************************/

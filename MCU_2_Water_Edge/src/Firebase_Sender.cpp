@@ -93,6 +93,6 @@ void Setup_Coexistence() {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     esp_wifi_init(&cfg);
     esp_wifi_set_storage(WIFI_STORAGE_RAM);
-    // esp_wifi_set_ps(WIFI_PS_NONE);  // Disable power saving for stable operation
+    esp_wifi_set_ps(WIFI_PS_NONE);  // Disable power saving for stable operation
     Serial.println("✅ WiFi and ESP-NOW Coexistence Mode Enabled!");
 }
