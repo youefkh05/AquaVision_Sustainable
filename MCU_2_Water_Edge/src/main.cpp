@@ -58,10 +58,9 @@ void setup()
     Sensor_init(current_sensor);
   }
   OLED_init();
-  ESPNOW_Receiver_Init();
-  delay(700);
   Setup_Firebase();
   Setup_Coexistence();
+  ESPNOW_Receiver_Init();
 
     /*Oled Config*/
   u8g2.setColorIndex(1);  //white color
@@ -268,7 +267,7 @@ void loop()
       
 
     } while (u8g2.nextPage());
-    u8g2.setAutoPageClear(1);
+    u8g2.setAutoPageClear(0);
   
   /* End of OLED Control********************************************************************************************/
 
@@ -318,7 +317,9 @@ void loop()
   // Enable_WiFi();
   if(isRecieved == true)
   {
+    ESPNOW_Receiver_deInit(); // Deinitialize ESP-NOW before sending data to Firebase
     Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+    ESPNOW_Receiver_Init(); // Reinitialize ESP-NOW after sending data
     isRecieved = false; // Reset the flag after sending data
   }
 

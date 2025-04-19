@@ -52,6 +52,11 @@ void ESPNOW_Receiver_Init()
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv)); // Register receive callback
 }
 
+void ESPNOW_Receiver_deInit()
+{
+    esp_now_deinit(); // Deinitialize ESP-NOW
+}
+
 // void Enable_WiFi()
 // {
 //     WiFi.mode(WIFI_STA);              // >>> HIGHLIGHT: Ensure STA mode remains active

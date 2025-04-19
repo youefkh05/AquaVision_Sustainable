@@ -34,6 +34,7 @@ extern volatile bool isRecieved;
    Function Prototypes
 */
 void ESPNOW_Receiver_Init();
+void ESPNOW_Receiver_deInit();
 // void Enable_WiFi();
 void Enable_ESPNow();
 
