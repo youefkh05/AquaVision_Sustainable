@@ -57,7 +57,7 @@ void Enable_WiFi()
 
     while (WiFi.status() != WL_CONNECTED) {
         Serial.println("Connecting to WiFi for Firebase...");
-        delay(1000);
+        delay(500);
     }
 
     Serial.println("WiFi Connected for Firebase!");

@@ -19,10 +19,11 @@ void loop()
   data.water_level = getDepth_Average_cm(CurrentSensor); // Measure Water Level
   data.temperature = Temp_getTempC();
 
-  Serial.printf("Middle Water Level:  %.02f\n",data.water_level);
+  Serial.printf("\nMiddle Water Level:  %.02f\n",data.water_level);
   Serial.printf("Water Temprature:    %.02f\n",data.temperature);
 
   ESPNOW_SendData(&data, sizeof(data));
+  delay(700); // Delay of 500ms for ESP-NOW send interval
   // ESP NOW Send Data
 
   delay(1000); // Delay for 1 second

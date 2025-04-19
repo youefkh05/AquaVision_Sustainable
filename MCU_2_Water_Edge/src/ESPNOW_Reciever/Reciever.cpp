@@ -8,6 +8,7 @@
  */
 
 #include "Reciever.h"
+#include "../Water_Level/Water_Level.h"
 
 /* Variable to hold received sensor data */
 SensorData receivedData;
@@ -25,6 +26,13 @@ volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int le
     memcpy(&receivedData, incomingData, sizeof(receivedData)); // Copy received data
     // Serial.printf("Received: Water Level = %.2f, Temperature = %.2f\n", receivedData.water_level_1, receivedData.temp);
     isRecieved = true;
+
+      // Print Water Level
+    Serial.printf("\nWater Level 1: %.2f\n", AllData.water_level_1);
+    Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
+    Serial.printf("Temperature: %.2f\n\n", AllData.temp);
+    // Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+    // Send Data to Firebase
 }
 
 /*
@@ -33,7 +41,7 @@ volatile void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int le
  */
 void ESPNOW_Receiver_Init()
 {
-    WiFi.mode(WIFI_STA); // Set ESP32 to station mode
+    WiFi.mode(WIFI_AP_STA); // Set ESP32 to station mode
 
     //digitalWrite(ESPNOW_DEBUG_LED, HIGH); // Turn on LED to indicate ESP-NOW initialization
     if (esp_now_init() != ESP_OK) {
@@ -42,6 +50,11 @@ void ESPNOW_Receiver_Init()
     }
 
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv)); // Register receive callback
+}
+
+void ESPNOW_Receiver_deInit()
+{
+    esp_now_deinit(); // Deinitialize ESP-NOW
 }
 
 // void Enable_WiFi()

@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "Water_Level/Water_Level.h"
-#include "ESPNOW_Reciever/Reciever.h"
 #include "OLED/oled.h"
 #include "Firebase_Sender.h"
 
@@ -8,11 +7,8 @@
 
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0,SCL,SDA,U8X8_PIN_NONE);  // Oled Object
 
-struct Data : public SensorData
-{
-  float32 water_level_2;
-} AllData;
-// Struct to store all data
+Data AllData;
+// Struct to store all data initialization
 
 Sensor_Type current_sensor = ToF; // Global Variable to quickly choose Depth Sensor
 bool measureData = true; // Flag to measure data
@@ -55,7 +51,7 @@ char buffer2[10];   // Buffer to hold the converted number
 
 void setup()
 {
-
+  Serial.begin(9600);
     /*Intializations*/
   if(measureData == true)
   {
@@ -63,15 +59,13 @@ void setup()
   }
   OLED_init();
   Setup_Firebase();
-  ESPNOW_Receiver_Init();
   Setup_Coexistence();
-  Serial.begin(9600);
+  ESPNOW_Receiver_Init();
 
     /*Oled Config*/
   u8g2.setColorIndex(1);  //white color
   u8g2.setBitmapMode(1);
   u8g2.begin();
-
   
 }
 
@@ -105,11 +99,6 @@ void loop()
   AllData.temp = receivedData.temp;
 
   // AllData.water_level_2 = getDepth_Average_cm(current_sensor); // Measure Water Depth at Water Edge
-
-  // Print Water Level
-  Serial.printf("Water Level 1: %.2f\n", AllData.water_level_1);
-  Serial.printf("Water Level 2: %.2f\n", AllData.water_level_2);
-  Serial.printf("Temperature: %.2f\n", AllData.temp);
 
   /* Button Control ************************************************************************/
   if (current_screen == 0)
@@ -190,6 +179,7 @@ void loop()
 
 
   /* OLED Section *******************************************************************************/
+  u8g2.setAutoPageClear(1);
   u8g2.firstPage();       
     do
     { 
@@ -277,6 +267,7 @@ void loop()
       
 
     } while (u8g2.nextPage());
+    u8g2.setAutoPageClear(0);
   
   /* End of OLED Control********************************************************************************************/
 
@@ -306,7 +297,7 @@ void loop()
   }
   else
   {
-      progress = 0;
+      // progress = 0;
   }
 
   if (progress2 < 124 && AllData.water_level_2 < 28)
@@ -315,7 +306,7 @@ void loop()
   }
   else
   {
-      progress = 0;
+      // progress2 = 0;
   }
 
   /* End of Variables Control ***************************************************************************************/
@@ -324,7 +315,13 @@ void loop()
 
   // /* 🔹 Enable WiFi and send data to Firebase */
   // Enable_WiFi();
-   Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+  if(isRecieved == true)
+  {
+    ESPNOW_Receiver_deInit(); // Deinitialize ESP-NOW before sending data to Firebase
+    Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200);
+    ESPNOW_Receiver_Init(); // Reinitialize ESP-NOW after sending data
+    isRecieved = false; // Reset the flag after sending data
+  }
 
   // /* 🔹 Switch back to ESP-NOW mode (Disconnect WiFi from router) */
   // Enable_ESPNow();`

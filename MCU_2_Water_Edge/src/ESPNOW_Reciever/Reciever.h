@@ -12,6 +12,8 @@
 #include "common_includes.h"
 #include <esp_now.h>
 #include <WiFi.h>
+#include "../Firebase_Sender.h"
+
 
 #define ESPNOW_DEBUG_LED 2
 
@@ -32,6 +34,7 @@ extern volatile bool isRecieved;
    Function Prototypes
 */
 void ESPNOW_Receiver_Init();
+void ESPNOW_Receiver_deInit();
 // void Enable_WiFi();
 void Enable_ESPNow();
 
