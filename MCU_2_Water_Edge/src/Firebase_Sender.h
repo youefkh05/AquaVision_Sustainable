@@ -12,8 +12,8 @@
 #include <FirebaseESP32.h>
 
 /* WiFi Credentials */
-#define WIFI_SSID "ZXHNH168N"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N
-#define WIFI_PASSWORD "DHBZhF8$92bL" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL
+#define WIFI_SSID "H188A"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N -- H188A
+#define WIFI_PASSWORD "r5{K{P6>Pn.2" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL -- r5{K{P6>Pn.2
 
 /* Firebase Credentials */
 #define API_KEY "AIzaSyC-D17GV3prkmQDssF9ZbXiKGQq2-XLsiE"
@@ -23,8 +23,8 @@
 
 /* NTP Server Configuration */
 #define NTP_SERVER "pool.ntp.org"
-#define GMT_OFFSET_SEC (2 * 3600)  // GMT+2 (Adjust for your timezone)
-#define DAYLIGHT_OFFSET_SEC 0      // Change if daylight savings applies
+#define GMT_OFFSET_SEC (2 * 3600) // GMT+2 (Adjust for your timezone)
+#define DAYLIGHT_OFFSET_SEC 0     // Change if daylight savings applies
 
 /* Firebase Objects */
 extern FirebaseData fbdo;
