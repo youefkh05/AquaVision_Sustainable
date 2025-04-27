@@ -4,7 +4,7 @@
 #include "../std_types.h"
 #include <Arduino.h>
 
-#define PHONE_NUMBER "+201287077844" // +201060930725 (Ziad Emad) -- +201287077844 (Ameer)
+#define PHONE_NUMBER "+201144465559" // +201060930725 (Ziad Emad) -- +201287077844 (Ameer) -- +201144465559 (Kareem)
 
 void GSM_init(void);
 // Initializes the GSM module
