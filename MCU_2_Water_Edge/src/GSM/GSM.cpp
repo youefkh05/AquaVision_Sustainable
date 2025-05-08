@@ -21,7 +21,7 @@ void GSM_SMS_init(void)
 void GSM_sendData(float depth1, float temp1, float depth2)
 {
     char message[100];
-    snprintf(message, sizeof(message), "Sender:depth1=%.2fcm,temp=%.2f C, depth2 = %.2fcm", depth1, temp1, depth2);
+    snprintf(message, sizeof(message), "Sender:depth1=%.1fcm, temp1=%.1fC, depth2 = %dcm", depth1, temp1, depth2);
     GSM_sendSMS(message);
 }
 

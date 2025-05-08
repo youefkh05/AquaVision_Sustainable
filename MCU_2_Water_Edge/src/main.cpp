@@ -4,6 +4,9 @@
 #include "Firebase_Sender.h"
 #include "GSM/GSM.h"
 
+// #define USE_FIREBASE
+#define USE_GSM
+
 /* Global Variables *****************************************************************/
 
 U8G2_SH1106_128X64_NONAME_1_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE); // Oled Object
@@ -57,11 +60,18 @@ void setup()
     Sensor_init(current_sensor);
   }
   OLED_init();
+
+  #ifdef USE_FIREBASE
   Setup_Firebase();
+  #endif
+  
   Setup_Coexistence();
   ESPNOW_Receiver_Init();
+
+  #ifdef USE_GSM
   GSM_init();
   GSM_SMS_init();
+  #endif
 
   /*Oled Config*/
   u8g2.setColorIndex(1); // white color
@@ -312,10 +322,15 @@ void loop()
 
   if (isRecieved == true)
   {
-    ESPNOW_Receiver_deInit();                                                             // Deinitialize ESP-NOW before sending data to Firebase
+    // ESPNOW_Receiver_deInit();                                                             // Deinitialize ESP-NOW before sending data to Firebase
+    #ifdef USE_FIREBASE
     Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200); // Send data to Firebase
+    #endif
+
+    #ifdef USE_GSM
     GSM_sendData(AllData.water_level_1, AllData.temp, AllData.water_level_2);             // Send data via GSM
-    ESPNOW_Receiver_Init();                                                               // Reinitialize ESP-NOW after sending data
+    #endif
+    // ESPNOW_Receiver_Init();                                                               // Reinitialize ESP-NOW after sending data
     isRecieved = false;                                                                   // Reset the flag after sending data
   }
 }
