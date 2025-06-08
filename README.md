@@ -6,7 +6,7 @@
 >[!IMPORTANT]
 > This project is done as part of the Embedded Systems course [ELC2080] taught to second year Electronics and Elecrtic Communication Engineering Students at Cairo University Under the Supervision of Dr. Mohamed Riad.
 
-[Dashboard Link](https://amirsameh1.github.io/test/) To monitor project Data in real-time
+### **[Dashboard Link](https://amirsameh1.github.io/test/)** To monitor project Data in real-time
 
 ## Brief Description
 
