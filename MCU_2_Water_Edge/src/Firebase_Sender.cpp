@@ -76,6 +76,7 @@ void Send_Firebase_Data(float depth1, float temp1, float depth2, float temp2)
     json.set("temp1", temp1);
     json.set("depth2", depth2);
     json.set("temp2", temp2);
+    json.set("source", "ESP-WiFi");
 
     Serial.println("Uploading data to Firebase...");
 
