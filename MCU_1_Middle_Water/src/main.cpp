@@ -21,7 +21,7 @@ void loop()
   data.water_level = getDepth_Average_cm(CurrentSensor); // Measure Water Level
   data.temperature = Temp_getTempC();
 
-  if(data.water_level < 10 || data.water_level > CONTAINER_DEPTH_CM)
+  if(data.water_level < 10)
   {
     Buzzer_on(); // Turn on buzzer if water level is out of range
   }
