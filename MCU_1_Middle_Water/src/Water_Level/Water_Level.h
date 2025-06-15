@@ -10,8 +10,12 @@
 
 #include "../common_includes.h"
 
-#define CONTAINER_DEPTH_CM      15
-#define AVERAGE_NUM             5
+#define WATER_LEVEL_DEBUG_LED_1     26
+#define WATER_LEVEL_DEBUG_LED_2     32
+#define WATER_LEVEL_BUZZER          13
+
+#define CONTAINER_DEPTH_CM          25
+#define AVERAGE_NUM                 5
 
 typedef enum
 {
@@ -19,6 +23,12 @@ typedef enum
     Waterproof,
     ToF
 } Sensor_Type;
+
+typedef enum
+{
+    Blue,
+    Red
+}   LedColor_t;
 
 //todo: Add Structure data type to hold measured data
 
@@ -29,6 +39,14 @@ float32 getDepth_cm(Sensor_Type sensor);
 
 float32 getDepth_Average_cm(Sensor_Type sensor);
 // Returns the average of the last 5 readings
+
+void DebugLED_init();
+void DebugLED_on(LedColor_t color);
+void DebugLED_off(LedColor_t color);
+
+void Buzzer_init();
+void Buzzer_on();
+void Buzzer_off();
 
 //todo: Add temprature sensor functions
 

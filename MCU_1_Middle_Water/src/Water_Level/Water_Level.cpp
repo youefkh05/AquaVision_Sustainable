@@ -67,3 +67,53 @@ float32 getDepth_Average_cm(Sensor_Type sensor)
 
     return (sum / AVERAGE_NUM);
 }
+
+void DebugLED_init()
+{
+    pinMode(WATER_LEVEL_DEBUG_LED_1, OUTPUT);
+    pinMode(WATER_LEVEL_DEBUG_LED_2, OUTPUT);
+}
+
+
+void DebugLED_on(LedColor_t color)
+{
+    switch(color)
+    {
+        case Blue:
+            digitalWrite(WATER_LEVEL_DEBUG_LED_1, HIGH);
+            break;
+
+        case Red:
+            digitalWrite(WATER_LEVEL_DEBUG_LED_2, HIGH);
+            break;
+    }
+}
+void DebugLED_off(LedColor_t color)
+{
+    switch(color)
+    {
+        case Blue:
+            digitalWrite(WATER_LEVEL_DEBUG_LED_1, LOW);
+            break;
+
+        case Red:
+            digitalWrite(WATER_LEVEL_DEBUG_LED_2, LOW);
+            break;
+    }
+}
+
+void Buzzer_init()
+{
+    pinMode(WATER_LEVEL_BUZZER, OUTPUT);
+    Buzzer_off(); // Ensure buzzer is off initially
+}
+
+void Buzzer_on()
+{
+    digitalWrite(WATER_LEVEL_BUZZER, HIGH);
+}
+
+void Buzzer_off()
+{
+    digitalWrite(WATER_LEVEL_BUZZER, LOW);
+}
