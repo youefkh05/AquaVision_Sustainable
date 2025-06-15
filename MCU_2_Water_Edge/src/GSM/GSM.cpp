@@ -6,7 +6,7 @@ HardwareSerial SIM800(2);
 
 void GSM_init(void)
 {
-    SIM800.begin(9600, SERIAL_8N1, 16, 17); // RX, TX pins
+    SIM800.begin(9600, SERIAL_8N1, 17, 16); // RX, TX pins
     delay(500);
     Serial.println("GSM Module Initialized");
 }
