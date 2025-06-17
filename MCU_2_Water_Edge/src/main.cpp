@@ -60,6 +60,7 @@ void setup()
     Sensor_init(current_sensor);
   }
   OLED_init();
+  Water_Level_Debug_LED_Init(); // Initialize the Water Level Debug LED
 
   #ifdef USE_FIREBASE
   Setup_Firebase();
@@ -322,6 +323,9 @@ void loop()
 
   if (isRecieved == true)
   {
+    Water_Level_Debug_LED_On(); // Turn on the Debug LED when data is received
+    delay(10);
+    Water_Level_Debug_LED_Off(); // Turn off the Debug LED after a short delay
     // ESPNOW_Receiver_deInit();                                                             // Deinitialize ESP-NOW before sending data to Firebase
     #ifdef USE_FIREBASE
     Send_Firebase_Data(AllData.water_level_1, AllData.temp, AllData.water_level_2, -200); // Send data to Firebase
@@ -331,6 +335,7 @@ void loop()
     GSM_sendData(AllData.water_level_1, AllData.temp, AllData.water_level_2);             // Send data via GSM
     #endif
     // ESPNOW_Receiver_Init();                                                               // Reinitialize ESP-NOW after sending data
-    isRecieved = false;                                                                   // Reset the flag after sending data
+    isRecieved = false;   
+                                                                    // Reset the flag after sending data
   }
 }

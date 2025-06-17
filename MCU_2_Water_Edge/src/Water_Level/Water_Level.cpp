@@ -67,3 +67,19 @@ float32 getDepth_Average_cm(Sensor_Type sensor)
 
     return (sum / AVERAGE_NUM);
 }
+
+void Water_Level_Debug_LED_Init(void)
+{
+    pinMode(WATER_LEVEL_DEBUG_LED_PIN, OUTPUT);
+    digitalWrite(WATER_LEVEL_DEBUG_LED_PIN, LOW); // Turn off the LED initially
+}
+
+void Water_Level_Debug_LED_On(void)
+{
+    digitalWrite(WATER_LEVEL_DEBUG_LED_PIN, HIGH); // Turn on the LED
+}
+
+void Water_Level_Debug_LED_Off(void)
+{
+    digitalWrite(WATER_LEVEL_DEBUG_LED_PIN, LOW); // Turn off the LED
+}
