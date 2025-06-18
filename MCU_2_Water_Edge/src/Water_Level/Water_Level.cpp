@@ -51,8 +51,8 @@ float32 getDepth_cm(Sensor_Type sensor)
             break;
     }
 
-    // return (CONTAINER_DEPTH_CM - distance);
-    return distance;
+    return (CONTAINER_DEPTH_CM - distance);
+    // return distance;
 }
 
 /****************************************************************************************/

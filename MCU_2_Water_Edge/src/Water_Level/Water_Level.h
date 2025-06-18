@@ -12,7 +12,7 @@
 #include "../ESPNOW_Reciever/Reciever.h"
 
 
-#define CONTAINER_DEPTH_CM          15
+#define CONTAINER_DEPTH_CM          25
 #define AVERAGE_NUM                 5
 
 #define WATER_LEVEL_DEBUG_LED_PIN   2 // Pin for Water Level Debug LED
