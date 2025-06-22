@@ -1,4 +1,4 @@
-# Embedded Systems Project (ELC2080)
+# Lake Sensing Project
 
 
 ![TEAM Logo Main](Team_Graphics/Export%20logo.png)
