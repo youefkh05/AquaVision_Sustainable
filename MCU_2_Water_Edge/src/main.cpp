@@ -3,7 +3,6 @@
 #include "OLED/oled.h"
 #include "Firebase_Sender.h"
 #include "GSM/GSM.h"
-#include "AI_blue/AI_blue.h"
 
 // #define USE_FIREBASE
 #define USE_FIREBASE
@@ -79,8 +78,6 @@ void setup()
   u8g2.setColorIndex(1); // white color
   u8g2.setBitmapMode(1);
   u8g2.begin();
-
-  BLUE_init();
 }
 
 void loop()
