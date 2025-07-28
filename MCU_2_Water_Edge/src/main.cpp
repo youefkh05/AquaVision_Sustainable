@@ -5,7 +5,7 @@
 #include "GSM/GSM.h"
 
 // #define USE_FIREBASE
-#define USE_GSM
+#define USE_FIREBASE
 
 /* Global Variables *****************************************************************/
 

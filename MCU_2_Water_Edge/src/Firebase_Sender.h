@@ -12,12 +12,13 @@
 #include <FirebaseESP32.h>
 
 /* WiFi Credentials */
-#define WIFI_SSID "AndroidAPCCB0"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N -- H188A
-#define WIFI_PASSWORD "A123456a" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL -- r5{K{P6>Pn.2
+#define WIFI_SSID "iPhone X max S +"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N -- H188A
+#define WIFI_PASSWORD "123456789" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL -- r5{K{P6>Pn.2
 
 /* Firebase Credentials */
 #define API_KEY "AIzaSyC-D17GV3prkmQDssF9ZbXiKGQq2-XLsiE"
 #define DATABASE_URL "https://project-0-51c9c-default-rtdb.firebaseio.com"
+#define Dash_URL "https://amirsameh1.github.io/WaterLevel_Measurment_Website/"
 #define USER_EMAIL "amirsameh770@gmail.com"
 #define USER_PASSWORD "123456789"
 
