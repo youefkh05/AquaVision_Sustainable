@@ -1,6 +1,6 @@
 clear;
 clc;
-esp = serialport("COM6", 9600);
+esp = serialport("COM11", 9600);
 configureTerminator(esp, "LF");
 flush(esp);
 
@@ -11,51 +11,36 @@ tempValue = NaN;
 
 
 while true
-    if esp.NumBytesAvailable > 0
-        rawLine = readline(esp);
-        if ~isempty(rawLine) && ~ismissing(rawLine)
-            line = strtrim(rawLine);  % Clean line
+    line = strtrim(readline(esp));  % Remove newline and whitespaces
+ % Look for "Water Level 1"
+        if startsWith(line, "Water Level 1:")
+            level1 = extractValue(line);
 
-            if startsWith(line, "Water Level 1")
-                level1 = extractValue(line);
+            % Read next lines for full packet
+            line2 = strtrim(readline(esp)); % Water Level 2
+            level2 = extractValue(line2);
 
-                % Read next lines if available
-                if esp.NumBytesAvailable > 0
-                    line2 = strtrim(readline(esp));  % Water Level 2
-                    level2 = extractValue(line2);
-                else
-                    continue;
+            line3 = strtrim(readline(esp)); % Temperature
+            tempValue = extractValue(line3);
+
+            % Skip optional Firebase message
+            while esp.NumBytesAvailable > 0
+                extraLine = strtrim(readline(esp));
+                if contains(extraLine, "Uploaded Successfully")
+                    break;
                 end
-
-                if esp.NumBytesAvailable > 0
-                    line3 = strtrim(readline(esp));  % Temperature
-                    tempValue = extractValue(line3);
-                else
-                    continue;
-                end
-
-                % Skip Firebase upload success lines
-                while esp.NumBytesAvailable > 0
-                    extraLine = strtrim(readline(esp));
-                    if contains(extraLine, "Uploaded Successfully")
-                        break;
-                    end
-                end
-
-                % Display values
-                fprintf("Readings -> L1: %.2f | L2: %.2f | Temp: %.2f\n", ...
-                    level1, level2, tempValue);
-
-                % Optionally call chatbot
-                AquaVisionChat(level1, tempValue);
-            else
-                
             end
-        end
-        %fprintf("%s\n", line); % Print other lines
-    end
 
-    pause(1); % reduce loop CPU usage
+            % Display latest data
+            fprintf("Readings -> L1: %.2f | L2: %.2f | Temp: %.2f\n", ...
+                 level1, level2, tempValue);
+        end
+
+    % === Call chatbot for user input ===
+    %AquaVisionChat(level1, tempValue);
+    fprintf(line);
+    fprintf("/n");
+    pause(1); % optional: reduce loop speed
 end
 
 %% === AI FUNCTIONALITY ===
