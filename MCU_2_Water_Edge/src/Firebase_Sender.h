@@ -12,8 +12,8 @@
 #include <FirebaseESP32.h>
 
 /* WiFi Credentials */
-#define WIFI_SSID     "Khaled Omar"      //"iPhone X max S +"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N -- H188A
-#define WIFI_PASSWORD "W1R3Le55_C0NnEcT!On#047"      //"123456789" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL -- r5{K{P6>Pn.2
+#define WIFI_SSID     "iPhone X max S +"     //"Khaled Omar"      //"iPhone X max S +"            // AndroidAPCCB0 -- Communication(8310) -- Linksys00431_5GHz -- TP-LINK_B238 -- MyPhone -- Mi_9t -- ZXHNH168N -- H188A
+#define WIFI_PASSWORD "123456789"       //"W1R3Le55_C0NnEcT!On#047"      //"123456789" // A123456a -- open -- open -- 90701702 -- Locked3614 -- 28072004 -- DHBZhF8$92bL -- r5{K{P6>Pn.2
 
 /* Firebase Credentials */
 #define API_KEY "AIzaSyC-D17GV3prkmQDssF9ZbXiKGQq2-XLsiE"

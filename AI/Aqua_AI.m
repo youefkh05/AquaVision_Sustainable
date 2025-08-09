@@ -1,39 +1,102 @@
-function AquaVisionChat()
-    clc;
-    clear;
-    disp("🐟 AquaVision AI");
-    disp("Type 'exit' to quit.\n");
+clear;
+clc;
+esp = serialport("COM6", 9600);
+configureTerminator(esp, "LF");
+flush(esp);
 
-    while true
-        userInput = lower(input("You: ", 's'));
+disp("🐟 AquaVision System Started!");
 
-        if strcmp(userInput, 'exit')
-            disp("AquaVision: Goodbye! Stay efficient 🐠");
-            break;
+level1 = NaN;
+tempValue = NaN;
+
+
+while true
+    if esp.NumBytesAvailable > 0
+        rawLine = readline(esp);
+        if ~isempty(rawLine) && ~ismissing(rawLine)
+            line = strtrim(rawLine);  % Clean line
+
+            if startsWith(line, "Water Level 1")
+                level1 = extractValue(line);
+
+                % Read next lines if available
+                if esp.NumBytesAvailable > 0
+                    line2 = strtrim(readline(esp));  % Water Level 2
+                    level2 = extractValue(line2);
+                else
+                    continue;
+                end
+
+                if esp.NumBytesAvailable > 0
+                    line3 = strtrim(readline(esp));  % Temperature
+                    tempValue = extractValue(line3);
+                else
+                    continue;
+                end
+
+                % Skip Firebase upload success lines
+                while esp.NumBytesAvailable > 0
+                    extraLine = strtrim(readline(esp));
+                    if contains(extraLine, "Uploaded Successfully")
+                        break;
+                    end
+                end
+
+                % Display values
+                fprintf("Readings -> L1: %.2f | L2: %.2f | Temp: %.2f\n", ...
+                    level1, level2, tempValue);
+
+                % Optionally 
+                %AquaVisionChat(level1, tempValue);
+            else
+                
+            end
         end
+        AquaVisionChat(level1, tempValue);
+        %fprintf("%s\n", line); % Print other lines
+    end
 
-        handleInput(userInput);
+    pause(1); % reduce loop CPU usage
+end
+
+%% === AI FUNCTIONALITY ===
+
+
+function val = extractValue(line)
+    % Helper function to extract numeric value from "Key: Value" format
+    tokens = split(line, ":");
+    if numel(tokens) == 2
+        val = str2double(strtrim(tokens{2}));
+    else
+        val = NaN;
     end
 end
 
-function handleInput(userInput)
+function AquaVisionChat(levelValue, tempValue)
+    userInput = lower(input("You: ", 's'));
+
+    if strcmp(userInput, 'exit')
+        disp("AquaVision: Goodbye! Stay efficient 🐠");
+        return;
+    end
+
+    handleInput(userInput, levelValue, tempValue);
+end
+
+function handleInput(userInput, levelValue, tempValue)
     if contains(userInput, 'water')
         sendRandomMessage(waterMessages());
-        value = randi([0, 35]); % Simulated value
-        printSensorReading(value, 2);
-    elseif contains(userInput, 'ph')
-        sendRandomMessage(phMessages());
+        printSensorReading(levelValue, 2);
     elseif contains(userInput, 'temp')
-        value = randi([20, 35]); % Simulated value
         sendRandomMessage(temperatureMessages());
-        printSensorReading(value, 1);
+        printSensorReading(tempValue, 1);
+    elseif contains(userInput, 'ph')
+        sendRandomMessage(phMessages());  % Simulated
     elseif contains(userInput, 'hi') || contains(userInput, 'hello')
         sendRandomMessage(welcomeMessages());
     elseif contains(userInput, 'sensor')
-        % Simulate sensor input for demonstration
-        value = randi([20, 35]); % Simulated value
-        type = randi([1, 3]);    % Random sensor type
-        printSensorReading(value, type);
+        printSensorReading(tempValue, 1);
+        printSensorReading(levelValue, 2);
     else
         disp("AquaVision: I'm still learning. Try asking about 'water', 'pH', or 'temperature'.");
     end
@@ -47,17 +110,17 @@ end
 function printSensorReading(value, type)
     switch type
         case 1
-            fprintf("AquaVision: Temperature reading is: %d °C\n", value);
+            fprintf("AquaVision: Temperature reading is: %.2f °C\n", value);
         case 2
-            fprintf("AquaVision: Water level 1 reading is: %d cm\n", value);
+            fprintf("AquaVision: Water level is: %.2f cm\n", value);
         case 3
-            fprintf("AquaVision: Water level 2 reading is: %d cm\n", value);
+            fprintf("AquaVision: Water level 2 reading is: %.2f cm\n", value);
         otherwise
-            fprintf("AquaVision: Unknown sensor type. Value: %d\n", value);
+            fprintf("AquaVision: Unknown sensor type. Value: %.2f\n", value);
     end
 end
 
-% === Message Definitions ===
+%% === CHAT MESSAGES ===
 function msgs = welcomeMessages()
     msgs = {
         "Hello, fish farmer!"
