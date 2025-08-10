@@ -23,7 +23,7 @@ function varargout = AquaVision_Front(varargin)
 
 % Edit the above text to modify the response to help AquaVision_Front
 
-% Last Modified by GUIDE v2.5 09-Aug-2025 20:48:21
+% Last Modified by GUIDE v2.5 10-Aug-2025 22:31:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -73,7 +73,7 @@ pause(2);
     set(handles.Mes_stat_box, 'String', sprintf('\nLevel1\n\n\nTemperature'));
     set(handles.Mes_variable, 'String', sprintf('\n%.2f m\n\n\n%.2f °C', ...
     handles.level1, handles.temperature1));
-    set(handles.AI_Res, 'String', sprintf("I m Waiting"));
+    set(handles.AI_Out, 'String', sprintf("I m Waiting"));
     
     
     % Create a timer for reading ESP32 data
@@ -216,16 +216,6 @@ varargout{1} = handles.output;
 end
 
 
-
-function AI_In_Callback(hObject, eventdata, handles)
-% hObject    handle to AI_In (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of AI_In as text
-%        str2double(get(hObject,'String')) returns contents of AI_In as a double
-end
-
 % --- Executes during object creation, after setting all properties.
 function AI_In_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to AI_In (see GCBO)
@@ -237,4 +227,126 @@ function AI_In_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
+
+function AI_In_Callback(hObject, eventdata, handles)
+% hObject    handle to AI_In (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of AI_In as text
+%        str2double(get(hObject,'String')) returns contents of AI_In as a double
+    % Get user input from edit box
+    userInput = lower(get(hObject, 'String'));
+
+    % Clear the edit box after submission
+    set(hObject, 'String', '');
+
+    % Call AI handler with latest sensor data
+    handleInput(userInput, handles.level1, handles.temperature1, handles);
+    
+    disp("AI In");
+    
+    % Save any changes to handles
+    guidata(hObject, handles);
+end
+
+function handleInput(userInput, levelValue, tempValue, handles)
+    disp("AI_Out");
+    if strcmp(userInput, 'exit')
+        set(handles.AI_Out, 'String', "AquaVision: Goodbye! Stay efficient ");
+        return;
+    end
+
+    if contains(userInput, 'water')
+        msg = sendRandomMessage(waterMessages());
+        set(handles.AI_Out, 'String', sprintf("%s\nWater level: %.2f m", msg, levelValue));
+
+    elseif contains(userInput, 'temp')
+        msg = sendRandomMessage(temperatureMessages());
+        set(handles.AI_Out, 'String', sprintf("%s\nTemperature: %.2f °C", msg, tempValue));
+
+    elseif contains(userInput, 'ph')
+        msg = sendRandomMessage(phMessages());
+        set(handles.AI_Out, 'String', msg);
+
+    elseif contains(userInput, 'hi') || contains(userInput, 'hello')
+        msg = sendRandomMessage(welcomeMessages());
+        set(handles.AI_Out, 'String', msg);
+
+    elseif contains(userInput, 'sensor')
+        set(handles.AI_Out, 'String', sprintf("Temperature: %.2f °C\nWater Level: %.2f m", ...
+            tempValue, levelValue));
+
+    else
+        set(handles.AI_Out, 'String', ...
+            "AquaVision: I'm still learning. Try asking about 'water', 'pH', or 'temperature'.");
+    end
+end
+
+function msg = sendRandomMessage(messages)
+    idx = randi(length(messages));
+    msg = sprintf("AquaVision: %s", messages{idx});
+end
+
+
+%=== CHAT MESSAGES ===
+function msgs = welcomeMessages()
+    msgs = {
+        "Hello, fish farmer!"
+        "Welcome to AquaVision!"
+        "Nice to see you!"
+        "System ready and watching your tank!"
+        "Hey there! AquaVision at your service."
+        "Good day! Monitoring in progress."
+        "Welcome aboard!"
+        "Ready to optimize your aquaculture."
+        "Sensors are all set."
+        "Data flows, AquaVision knows!"
+    };
+end
+
+function msgs = waterMessages()
+    msgs = {
+        "Water levels are optimal!"
+        "The water is calm and clear."
+        "All systems show good water status."
+        "Tank water is within safe range."
+        "Water conditions are being monitored."
+        "H2O is healthy today!"
+        "Water quality checks out."
+        "Looks like the water is doing fine."
+        "No water alerts at the moment."
+        "Fish are swimming happy!"
+    };
+end
+
+function msgs = phMessages()
+    msgs = {
+        "pH is balanced and healthy."
+        "pH levels are looking good!"
+        "Current pH: within ideal range."
+        "pH sensors report stable readings."
+        "No pH issues detected."
+        "Aquatic chemistry looks great."
+        "All pH systems are green."
+        "Fish approve of today's pH!"
+        "pH is within the safe zone."
+        "Perfect acidity levels right now!"
+    };
+end
+
+function msgs = temperatureMessages()
+    msgs = {
+        "Water temperature is stable and ideal."
+        "Current temperature: Fish-friendly!"
+        "No thermal stress in the tank."
+        "Temperature sensors are reporting safe levels."
+        "Cool and steady: perfect tank conditions."
+        "Heat levels are well regulated."
+        "Fish are comfy at this temperature."
+        "Tank environment is thermally balanced."
+        "No overheating detected."
+        "Temperature checks: all clear!"
+    };
 end
