@@ -56,44 +56,58 @@ function AquaVision_Front_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for AquaVision_Front
 handles.output = hObject;
 
-% global variables
-global level1       %water level at aqua 1
-global temperature1 %temperature at aqua1
-
-%initialize the variable
-level1 = 0;
-temperature1 = 0;
-set(handles.status_text, 'String', 'Not Connected');
-
 %imgae back ground
 ah=axes('unit','normalized','position',[0 0 1 1]);
 bg=imread("Fish_Sesnor.png");
 imagesc(bg);
 set(ah,'handlevisibility','off','visible','off');
 
-% Update handles structure
-guidata(hObject, handles);
 
+% global variables
+global level1       %water level at aqua 1
+global temperature1 %temperature at aqua1
 global esp
-    delete(instrfind); % clear any previous COM objects
-    
-    % Connect to ESP32
-    esp = serialport("COM9", 9600); % Change COM port as needed
-    configureTerminator(esp, "LF");
-    flush(esp);
+
+    %initialize the variable
+    level1 = 0;
+    temperature1 = 0;
+    set(handles.status_text, 'String', 'Not Connected');
+
+    % List available serial ports
+    availablePorts = serialportlist("available");
+
+    % Desired port
+    targetPort = "COM9";
+
+    % Update handles structure
+    guidata(hObject, handles);
     
     
     % Keep static label fixed
     set(handles.Mes_stat_box, 'String', sprintf('\nLevel1\n\n\nTemperature'));
-    
-    pause(1);
+   
     
     while true
-        rawLine = readline(esp);
-        fprintf("%s\n", line); % Print other lines
+        if any(strcmpi(availablePorts, targetPort))
+            delete(instrfind); % clear any previous COM objects
+            disp("✅ COM9 is available, connecting...");
+            % Connect to ESP32
+            esp = serialport(targetPort, 9600);
+            configureTerminator(esp, "LF");
+            flush(esp);
+            % Start loop to read ESP32 data
+            while isvalid(esp)
+                rawLine = readline(esp);
+                line = strtrim(rawLine);  % Clean line
+                fprintf("%s\n", line); % Print other lines
+                pause(1);
+            end % while isvalid(esp)
+        end % if any(strcmpi(availablePorts, targetPort))
+        
+        set(handles.status_text, 'String', 'Not Connected');
         pause(1);
-    end
-    
+    end % while true
+        
 end
 % UIWAIT makes AquaVision_Front wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
