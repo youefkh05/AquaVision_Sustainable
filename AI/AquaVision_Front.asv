@@ -78,21 +78,16 @@ global esp
     delete(instrfind); % clear any previous COM objects
     
     % Connect to ESP32
-    esp = serialport("COM9", 9600); % Change COM port as needed
+    esp = serialport("COM6", 9600); % Change COM port as needed
     configureTerminator(esp, "LF");
     flush(esp);
     
-    
+    set(handles.status_text, 'String', 'Monitoring started...');
+
     % Keep static label fixed
-    set(handles.Mes_stat_box, 'String', sprintf('\nLevel1\n\n\nTemperature'));
+    set(handles.mes_stat, 'String', sprintf('Level1\nLevel2\nTemperature'));
     
-    pause(1);
     
-    while true
-        rawLine = readline(esp);
-        fprintf("%s\n", line); % Print other lines
-        pause(1);
-    end
     
 end
 % UIWAIT makes AquaVision_Front wait for user response (see UIRESUME)
