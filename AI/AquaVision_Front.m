@@ -62,55 +62,146 @@ bg=imread("Fish_Sesnor.png");
 imagesc(bg);
 set(ah,'handlevisibility','off','visible','off');
 
+pause(2);
 
-% global variables
-global level1       %water level at aqua 1
-global temperature1 %temperature at aqua1
-global esp
-
-    %initialize the variable
-    level1 = 0;
-    temperature1 = 0;
+    % Initialize variables
+    handles.level1 = 0;
+    handles.temperature1 = 0;
+    handles.targetPort = "COM9";
+    handles.esp = [];
     set(handles.status_text, 'String', 'Not Connected');
-
-    % List available serial ports
-    availablePorts = serialportlist("available");
-
-    % Desired port
-    targetPort = "COM9";
-
+    set(handles.Mes_stat_box, 'String', sprintf('\nLevel1\n\n\nTemperature'));
+    set(handles.Mes_variable, 'String', sprintf('\n%.2f m\n\n\n%.2f °C', ...
+    handles.level1, handles.temperature1));
+    set(handles.AI_Res, 'String', sprintf("I m Waiting"));
+    
+    
+    % Create a timer for reading ESP32 data
+    handles.t = timer( ...
+        'ExecutionMode', 'fixedSpacing', ...
+        'Period', 3, ... % check every 3 second
+        'TimerFcn', @(~,~)readESP32(hObject) ...
+    );
+    
     % Update handles structure
     guidata(hObject, handles);
     
-    
-    % Keep static label fixed
-    set(handles.Mes_stat_box, 'String', sprintf('\nLevel1\n\n\nTemperature'));
-   
-    
-    while true
-        if any(strcmpi(availablePorts, targetPort))
-            delete(instrfind); % clear any previous COM objects
-            disp("✅ COM9 is available, connecting...");
-            % Connect to ESP32
-            esp = serialport(targetPort, 9600);
-            configureTerminator(esp, "LF");
-            flush(esp);
-            % Start loop to read ESP32 data
-            while isvalid(esp)
-                rawLine = readline(esp);
-                line = strtrim(rawLine);  % Clean line
-                fprintf("%s\n", line); % Print other lines
-                pause(1);
-            end % while isvalid(esp)
-        end % if any(strcmpi(availablePorts, targetPort))
-        
-        set(handles.status_text, 'String', 'Not Connected');
-        pause(1);
-    end % while true
-        
+    % Start the timer
+    start(handles.t);
+
 end
 % UIWAIT makes AquaVision_Front wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
+
+
+function readESP32(hObject)
+ 
+    % If the figure was closed, exit immediately
+    if ~ishandle(hObject)
+        return;
+    end
+    
+    handles = guidata(hObject);
+    disp("Read ESP");
+    
+    %also exit if figure UserData says it's closing
+    if isappdata(hObject, 'closing') && getappdata(hObject, 'closing')
+        disp("Exit close esp");
+        return;
+    end
+    
+    try
+        % If ESP not connected, try to connect
+        if isempty(handles.esp) || ~isvalid(handles.esp)
+            availablePorts = serialportlist("available");
+            if any(strcmpi(availablePorts, handles.targetPort))
+                delete(instrfind); % clear any lingering serial objects
+                disp("✅ COM9 is available, connecting...");
+                handles.esp = serialport(handles.targetPort, 9600);
+                configureTerminator(handles.esp, "LF");
+                flush(handles.esp);
+                set(handles.status_text, 'String', 'Monitoring started...');
+                guidata(hObject, handles);
+            else
+                set(handles.status_text, 'String', 'Not Connected');
+                disp("Not Connected");
+                return;
+            end
+        end
+
+        
+        % If connected, try to read
+        if isvalid(handles.esp) && handles.esp.NumBytesAvailable > 0
+            rawLine = readline(handles.esp);
+            if ~isempty(rawLine) && ~ismissing(rawLine)
+                set(handles.status_text, 'String', 'Connected');
+                line = strtrim(rawLine);
+
+                % Check for water level line
+                if startsWith(line, "Middle Water Level")
+                    handles.level1 = extractValue(line);
+
+                    % Read temperature line if available
+                    if handles.esp.NumBytesAvailable > 0
+                        tempLine = strtrim(readline(handles.esp));
+                        if startsWith(tempLine, "Water Temprature") % ESP spelling
+                            handles.temperature1 = extractValue(tempLine);
+                        end
+                    end
+
+                    % Update GUI variable box
+                    set(handles.Mes_variable, 'String', ...
+                        sprintf('\n%.2f m\n\n\n%.2f °C', ...
+                        handles.level1, handles.temperature1));
+
+                    guidata(hObject, handles);
+                end
+            end
+        end
+        
+    catch ME
+        warning("⚠ Error reading ESP32: %s", ME.message);
+        % If error, mark as disconnected so it will retry
+        if isvalid(handles.t) 
+            stop(handles.t);
+            start(handles.t);
+        end
+        handles.esp = [];
+        set(handles.status_text, 'String', 'Not Connected');
+        guidata(hObject, handles);
+    end
+end
+
+% Helper function to parse numeric values
+function val = extractValue(line)
+    tokens = regexp(line, '([-+]?[0-9]*\.?[0-9]+)', 'match');
+    if ~isempty(tokens)
+        val = str2double(tokens{1});
+    else
+        val = NaN;
+    end
+end
+
+
+% --- Executes when user attempts to close figure ---
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
+    % Mark as closing
+    setappdata(hObject, 'closing', true);
+    disp("Exit close figure1");
+
+    try
+        if isfield(handles, 't') && isvalid(handles.t)
+            stop(handles.t);
+            delete(handles.t);
+            disp("Timer is stopped");
+        end
+        if isfield(handles, 'esp') && ~isempty(handles.esp) && isvalid(handles.esp)
+            clear handles.esp;
+        end
+    catch
+    end
+    delete(hObject);
+end
 
 
 % --- Outputs from this function are returned to the command line.
