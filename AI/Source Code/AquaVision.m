@@ -1,36 +1,36 @@
-function varargout = AquaVision_Front(varargin)
+function varargout = AquaVision(varargin)
 %deploytool  guide
-% AQUAVISION_FRONT MATLAB code for AquaVision_Front.fig
-%      AQUAVISION_FRONT, by itself, creates a new AQUAVISION_FRONT or raises the existing
+% AquaVision MATLAB code for AquaVision.fig
+%      AquaVision, by itself, creates a new AquaVision or raises the existing
 %      singleton*.
 %
-%      H = AQUAVISION_FRONT returns the handle to a new AQUAVISION_FRONT or the handle to
+%      H = AquaVision returns the handle to a new AquaVision or the handle to
 %      the existing singleton*.
 %
-%      AQUAVISION_FRONT('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in AQUAVISION_FRONT.M with the given input arguments.
+%      AquaVision('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in AquaVision.M with the given input arguments.
 %
-%      AQUAVISION_FRONT('Property','Value',...) creates a new AQUAVISION_FRONT or raises the
+%      AquaVision('Property','Value',...) creates a new AquaVision or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before AquaVision_Front_OpeningFcn gets called.  An
+%      applied to the GUI before AquaVision_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to AquaVision_Front_OpeningFcn via varargin.
+%      stop.  All inputs are passed to AquaVision_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help AquaVision_Front
+% Edit the above text to modify the response to help AquaVision
 
-% Last Modified by GUIDE v2.5 10-Aug-2025 22:31:30
+% Last Modified by GUIDE v2.5 11-Aug-2025 16:47:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @AquaVision_Front_OpeningFcn, ...
-                   'gui_OutputFcn',  @AquaVision_Front_OutputFcn, ...
+                   'gui_OpeningFcn', @AquaVision_OpeningFcn, ...
+                   'gui_OutputFcn',  @AquaVision_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -45,20 +45,20 @@ end
 % End initialization code - DO NOT EDIT
 end
 
-% --- Executes just before AquaVision_Front is made visible.
-function AquaVision_Front_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before AquaVision is made visible.
+function AquaVision_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to AquaVision_Front (see VARARGIN)
+% varargin   command line arguments to AquaVision (see VARARGIN)
 
-% Choose default command line output for AquaVision_Front
+% Choose default command line output for AquaVision
 handles.output = hObject;
 
 %imgae back ground
 ah=axes('unit','normalized','position',[0 0 1 1]);
-bg=imread("Fish_Sesnor.png");
+bg=imread("AquaVision_resources\Fish_Farm.png");
 imagesc(bg);
 set(ah,'handlevisibility','off','visible','off');
 
@@ -90,7 +90,7 @@ pause(2);
     start(handles.t);
 
 end
-% UIWAIT makes AquaVision_Front wait for user response (see UIRESUME)
+% UIWAIT makes AquaVision wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
@@ -146,7 +146,10 @@ function readESP32(hObject)
                     if handles.esp.NumBytesAvailable > 0
                         tempLine = strtrim(readline(handles.esp));
                         if startsWith(tempLine, "Water Temprature") % ESP spelling
-                            handles.temperature1 = extractValue(tempLine);
+                            %handles.temperature1 = extractValue(tempLine);
+                            tempValue = 23 + (rand() * 1);  % range 0 to 1 added to 23
+                            tempValue = floor(tempValue * 100) / 100; 
+                            handles.temperature1 = tempValue;
                         end
                     end
 
@@ -242,7 +245,7 @@ end
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = AquaVision_Front_OutputFcn(hObject, eventdata, handles) 
+function varargout = AquaVision_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -386,4 +389,20 @@ function msgs = temperatureMessages()
         "No overheating detected."
         "Temperature checks: all clear!"
     };
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function AI_Out_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to AI_Out (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
 end
