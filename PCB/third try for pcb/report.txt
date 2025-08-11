@@ -1,0 +1,11 @@
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-F_Cu.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-B_Cu.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-F_Paste.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-B_Paste.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-F_Silkscreen.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-B_Silkscreen.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-F_Mask.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-B_Mask.gbr'.
+Plotted to 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-Edge_Cuts.gbr'.
+Created Gerber job file 'C:\Users\Ziad\Desktop\sch\third try for pcb\gerber files\test-job.gbrjob'.
+Info: Done.
